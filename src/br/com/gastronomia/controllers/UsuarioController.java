@@ -52,7 +52,6 @@ public class UsuarioController {
 	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
 	public Response create(Usuario usuario) throws PersistenciaException, ValidationException {
-
 		try {
 			usuarioBO.createUser(usuario);
 		} catch (Exception e) {

@@ -1,8 +1,11 @@
 package br.com.gastronomia.bo;
 
 import br.com.gastronomia.dao.IngredienteDAO;
+import br.com.gastronomia.dao.UsuarioDAO;
+import br.com.gastronomia.dto.IngredienteCadastroDTO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Ingrediente;
+import br.com.gastronomia.model.Usuario;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -11,9 +14,11 @@ import java.util.List;
 
 public class IngredienteBO {
 	private IngredienteDAO ingredienteDAO;
+	private UsuarioDAO usuarioDAO;
 
 	public IngredienteBO() {
 		ingredienteDAO = new IngredienteDAO();
+		usuarioDAO = new UsuarioDAO();
 	}
 
 
@@ -33,9 +38,11 @@ public class IngredienteBO {
 
 	}
 
-	public boolean createIngrediente(Ingrediente ingrediente) throws ValidationException, NoSuchAlgorithmException {
-		if (ingrediente != null) {
-			System.out.println(ingrediente);
+	public boolean createIngrediente(IngredienteCadastroDTO ingredienteDto) throws ValidationException, NoSuchAlgorithmException {
+		if (ingredienteDto != null) {
+			Usuario usuario = usuarioDAO.findUserByID(ingredienteDto.getIdCriador());
+			Ingrediente ingrediente = new Ingrediente();
+			ingrediente.setIngredienteInfoCadastro(ingredienteDto, usuario);
 			ingredienteDAO.save(ingrediente);
 			return true;
 		}

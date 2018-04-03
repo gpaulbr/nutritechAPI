@@ -1,11 +1,13 @@
 package br.com.gastronomia.controllers;
 
 import br.com.gastronomia.bo.IngredienteBO;
+import br.com.gastronomia.dto.IngredienteCadastroDTO;
 import br.com.gastronomia.dto.StandardResponseDTO;
 import br.com.gastronomia.exception.PersistenciaException;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Ingrediente;
 import br.com.gastronomia.model.IngredienteAtributo;
+import br.com.gastronomia.model.Usuario;
 import br.com.gastronomia.util.EncryptUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,15 +44,14 @@ public class IngredienteController {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
-	public Response create(Ingrediente ingrediente) throws PersistenciaException, ValidationException {
-
+	public Response create(IngredienteCadastroDTO ingredienteDto) throws PersistenciaException, ValidationException {
 		try {
-			System.out.println(ingrediente);
-			ingredienteBO.createIngrediente(ingrediente);
+			System.out.println(ingredienteDto);
+			ingredienteBO.createIngrediente(ingredienteDto);
 		} catch (Exception e) {
 			return Response.ok().status(Response.Status.BAD_REQUEST).build();
 		}
-		return Response.ok().entity(new StandardResponseDTO(true, "Ingrediente "+ingrediente.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();
+		return Response.ok().entity(new StandardResponseDTO(true, "Ingrediente "+ingredienteDto.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();
 	}
 
 	@DELETE

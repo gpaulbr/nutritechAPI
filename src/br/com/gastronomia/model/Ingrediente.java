@@ -1,6 +1,7 @@
 package br.com.gastronomia.model;
 
 
+import br.com.gastronomia.dto.IngredienteCadastroDTO;
 import br.com.gastronomia.util.TipoDeIngrediente;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -117,7 +118,15 @@ public class Ingrediente implements Serializable {
 	public void setTipo(TipoDeIngrediente tipo) {
 			this.tipo= tipo;
 	}
-	
+
+	public void setIngredienteInfoCadastro(IngredienteCadastroDTO infoCadastro, Usuario criador) {
+		this.nome = infoCadastro.getNome();
+		this.origem = infoCadastro.getOrigem();
+		this.criador = criador;
+		this.status = infoCadastro.getStatus();
+		this.tipo = infoCadastro.getTipo();
+	}
+
 	
     @Override
     public String toString() {

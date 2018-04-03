@@ -11,9 +11,12 @@
 		<property name="hbm2ddl.auto">update</property> 
 		<mapping class="br.com.gastronomia.model.Usuario" />
 		<mapping class="br.com.gastronomia.model.Ingrediente" />
+		<mapping class="br.com.gastronomia.model.Receita" />
 		<mapping class="br.com.gastronomia.model.GrupoReceitas" />
 		<mapping class="br.com.gastronomia.model.Atributo" />
         <mapping class="br.com.gastronomia.model.IngredienteAtributo" />
         <mapping class="br.com.gastronomia.model.IngredienteAtributoId" />
+		<mapping class="br.com.gastronomia.model.ReceitaIngrediente" />
+		<mapping class="br.com.gastronomia.model.ReceitaIngredienteId" />
 	</session-factory>
 </hibernate-configuration>
