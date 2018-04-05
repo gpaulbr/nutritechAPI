@@ -2,12 +2,17 @@ package br.com.gastronomia.dto;
 
 import br.com.gastronomia.util.TipoDeIngrediente;
 
+import java.util.List;
+import java.util.Set;
+
 public class IngredienteCadastroDTO {
     private String nome;
     private long idCriador;
     private String origem;
     private boolean status;
     private TipoDeIngrediente tipo;
+
+    private Set<IngredienteAtributoDto> ingredienteAtributos;
 
     public IngredienteCadastroDTO() { }
 
@@ -31,6 +36,10 @@ public class IngredienteCadastroDTO {
         return tipo;
     }
 
+    public Set<IngredienteAtributoDto> getIngredienteAtributos() {
+        return ingredienteAtributos;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -49,5 +58,9 @@ public class IngredienteCadastroDTO {
 
     public void setTipo(TipoDeIngrediente tipo) {
         this.tipo = tipo;
+    }
+
+    public void setIngredienteAtributos(Set<IngredienteAtributoDto> ingredienteAtributos) {
+        this.ingredienteAtributos = ingredienteAtributos;
     }
 }

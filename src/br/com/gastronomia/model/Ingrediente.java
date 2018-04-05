@@ -103,6 +103,14 @@ public class Ingrediente implements Serializable {
 		this.ingredienteAtributo = ingredienteAtributo;
 	}
 
+	public void addIngredienteAtributo(Atributo atributo, String valor) {
+		IngredienteAtributo ingredienteAtributo = new IngredienteAtributo();
+		ingredienteAtributo.setValor(valor);
+		ingredienteAtributo.setAtributo(atributo);
+		ingredienteAtributo.setIngrediente(this);
+		this.ingredienteAtributo.add(ingredienteAtributo);
+	}
+
 	public boolean getStatus() {
 		return status;
 	}

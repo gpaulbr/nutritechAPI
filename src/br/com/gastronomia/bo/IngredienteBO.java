@@ -1,24 +1,28 @@
 package br.com.gastronomia.bo;
 
+import br.com.gastronomia.dao.AtributoDAO;
 import br.com.gastronomia.dao.IngredienteDAO;
 import br.com.gastronomia.dao.UsuarioDAO;
+import br.com.gastronomia.dto.IngredienteAtributoDto;
 import br.com.gastronomia.dto.IngredienteCadastroDTO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Ingrediente;
+import br.com.gastronomia.model.IngredienteAtributo;
 import br.com.gastronomia.model.Usuario;
 
+import java.lang.reflect.Array;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class IngredienteBO {
 	private IngredienteDAO ingredienteDAO;
 	private UsuarioDAO usuarioDAO;
+	private AtributoDAO atributoDAO;
 
 	public IngredienteBO() {
 		ingredienteDAO = new IngredienteDAO();
 		usuarioDAO = new UsuarioDAO();
+		atributoDAO = new AtributoDAO();
 	}
 
 
@@ -43,6 +47,9 @@ public class IngredienteBO {
 			Usuario usuario = usuarioDAO.findUserByID(ingredienteDto.getIdCriador());
 			Ingrediente ingrediente = new Ingrediente();
 			ingrediente.setIngredienteInfoCadastro(ingredienteDto, usuario);
+			for (IngredienteAtributoDto ingAtr: ingredienteDto.getIngredienteAtributos()) {
+				ingrediente.addIngredienteAtributo(atributoDAO.findAtributoByID(ingAtr.getIdAtributo()), ingAtr.getValor());
+			}
 			ingredienteDAO.save(ingrediente);
 			return true;
 		}
