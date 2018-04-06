@@ -61,7 +61,7 @@ public class AuthController {
 			e.printStackTrace();
 			return Response.status(UNAUTHORIZED).build();
 		}
-		return Response.ok().entity(token).build();
+		return Response.ok(usuario).build();
 	}
 
 	/**
