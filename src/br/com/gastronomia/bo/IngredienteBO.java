@@ -47,9 +47,9 @@ public class IngredienteBO {
 			Usuario usuario = usuarioDAO.findUserByID(ingredienteDto.getIdCriador());
 			Ingrediente ingrediente = new Ingrediente();
 			ingrediente.setIngredienteInfoCadastro(ingredienteDto, usuario);
-			for (IngredienteAtributoDto ingAtr: ingredienteDto.getIngredienteAtributos()) {
-				ingrediente.addIngredienteAtributo(atributoDAO.findAtributoByID(ingAtr.getIdAtributo()), ingAtr.getValor());
-			}
+//			for (IngredienteAtributoDto ingAtr: ingredienteDto.getIngredienteAtributos()) {
+//				ingrediente.addIngredienteAtributo(atributoDAO.findAtributoByID(ingAtr.getIdAtributo()), ingAtr.getValor());
+//			}
 			ingredienteDAO.save(ingrediente);
 			return true;
 		}
