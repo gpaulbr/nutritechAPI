@@ -21,7 +21,8 @@ public class Constantes {
 	
 	//Usuario roles
 	public static final String ADMINISTRATOR_ROLE = "administrator";
-	public static final String USER_ROLE = "user";
+	public static final String PROFESSOR_ROLE = "professor";
+	public static final String USER_ROLE = "usurario";
 	
 	
 }
