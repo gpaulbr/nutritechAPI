@@ -7,8 +7,8 @@
 *.rar
 
 *.iml
-target/*
 .idea/*
 .settings/*
 out/*
 /resources/config.properties
+/target/
