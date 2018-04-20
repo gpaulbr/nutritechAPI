@@ -21,7 +21,11 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  **/
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name= "Usuario")
+@Table(name= "Usuario",
+		uniqueConstraints={
+				@UniqueConstraint(columnNames={"Email"}, name="email_uc"),
+				@UniqueConstraint(columnNames={"Cpf"}, name="cpf_uc"),
+				@UniqueConstraint(columnNames={"Matricula"}, name="matricula_uc")})
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Usuario implements Serializable {
 
@@ -33,16 +37,16 @@ public class Usuario implements Serializable {
 	private long id;
 
 	@NotEmpty
-	@Column(name = "Cpf", unique = true)
+	@Column(name = "Cpf")
 	private String cpf;
 
 	@NotEmpty
 	@Email(message="E-mail invalido")
-	@Column(name = "Email", unique = true)
+	@Column(name = "Email")
 	private String email;
 
 	@NotEmpty
-	@Column(name = "Matricula", unique = true)
+	@Column(name = "Matricula")
 	private String matricula;
 
 	@NotEmpty

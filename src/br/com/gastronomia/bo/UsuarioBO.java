@@ -38,7 +38,7 @@ public class UsuarioBO {
 			usuarioDAO.save(usuario);
 			return true;
 		}
-		throw new ValidationException("invalido");
+		throw new ValidationException("teste");
 
 	}
 
