@@ -81,6 +81,19 @@ public class ReceitaController {
 
     }
 
+    @GET
+    @Path("/usuario/{id}")//tenho que ver isso, tentar seguir os passos da função acima,
+    @Produces("application/json; charset=UTF-8")
+    //@JWTTokenNeeded
+    public Response searchByIDUsuario(@PathParam("id") Long id) throws PersistenciaException, ValidationException {
+        try {
+            return Response.ok().entity(receitaBO.getReceitaByIdUsuario(id)).status(Response.Status.ACCEPTED).build();
+        } catch (Exception e) {
+            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+        }
+
+    }
+
     @PUT
     @Path("/update")
     @Consumes("application/json; charset=UTF-8")
@@ -96,4 +109,19 @@ public class ReceitaController {
         return Response.ok().entity(new StandardResponseDTO(true, "Receita "+receita.getNome()+ " editado com sucesso!")).status(Response.Status.ACCEPTED).build();
 
     }
+
+    /*
+   @GET
+    @Path("/name/{nome}")//tenho que ver isso, tentar seguir os passos da função acima,
+    @Produces("application/json; charset=UTF-8")
+    //@JWTTokenNeeded
+    public Response searchByIdUsuario(@PathParam("nome") String nome) throws PersistenciaException, ValidationException {
+
+        try {
+            return Response.ok().entity(receitaBO.listReceitaName(nome)).status(Response.Status.ACCEPTED).build();
+        } catch (Exception e) {
+            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+        }
+
+    } */
 }

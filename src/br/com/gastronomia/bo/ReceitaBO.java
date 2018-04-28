@@ -51,12 +51,27 @@ public class ReceitaBO {
         return listReceitas;
     }
 
-    public Receita getReceitaById(long id) throws ValidationException {
+    public Receita getReceitaById(Long id) throws ValidationException {
         if (id > 0) {
             return receitaDAO.findReceitaById(id);
         }
         throw new ValidationException("invalido");
 
     }
+
+    public List<Receita> getReceitaByIdUsuario(Long id) throws ValidationException {
+        if (id > 0) {
+            return receitaDAO.findReceitaByIdUsuario(id);
+        }
+        throw new ValidationException("invalido");
+
+    }
+
+//    public List<Receita> listReceitaName(String nome) throws ValidationException {
+//        if (nome != null) {
+//            return receitaDAO.listForName(nome);
+//        }
+//        throw new ValidationException("invalido");
+//    }
 
 }
