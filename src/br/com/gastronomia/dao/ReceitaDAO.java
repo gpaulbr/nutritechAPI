@@ -12,19 +12,6 @@ import java.util.List;
 
 public class ReceitaDAO extends GenericHibernateDAO<Receita> {
 
-//    public List<Receita> listForName(String q) {
-//        try {
-//            Session receitas = HibernateUtil.getFactory();
-//            List<Receita> receitas = new List<Receita>getNamedQuery("findUserByName").list();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return receitas;
-//    }
-
-
-
     public List<Receita> listAllReceitas(){
         List<Receita> Receitas = listAll(Receita.class);
         return Receitas;

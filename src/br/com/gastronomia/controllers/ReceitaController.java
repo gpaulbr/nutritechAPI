@@ -82,7 +82,7 @@ public class ReceitaController {
     }
 
     @GET
-    @Path("/usuario/{id}")//tenho que ver isso, tentar seguir os passos da função acima,
+    @Path("/usuario/{id}")
     @Produces("application/json; charset=UTF-8")
     //@JWTTokenNeeded
     public Response searchByIDUsuario(@PathParam("id") Long id) throws PersistenciaException, ValidationException {
@@ -110,18 +110,4 @@ public class ReceitaController {
 
     }
 
-    /*
-   @GET
-    @Path("/name/{nome}")//tenho que ver isso, tentar seguir os passos da função acima,
-    @Produces("application/json; charset=UTF-8")
-    //@JWTTokenNeeded
-    public Response searchByIdUsuario(@PathParam("nome") String nome) throws PersistenciaException, ValidationException {
-
-        try {
-            return Response.ok().entity(receitaBO.listReceitaName(nome)).status(Response.Status.ACCEPTED).build();
-        } catch (Exception e) {
-            return Response.ok().status(Response.Status.BAD_REQUEST).build();
-        }
-
-    } */
 }
