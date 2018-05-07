@@ -2,6 +2,7 @@ package br.com.gastronomia.db;
 
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.imp.GenericDAO;
+import br.com.gastronomia.model.Receita;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -142,14 +143,21 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 	@Override
 	public Object findSingleObject(String parameter, Class<?> T, Object valueParameter) {
 		Session session = HibernateUtil.getFactory();
-		
+
 		String hql = "Select T FROM " + T.getSimpleName() + " T  where T." + parameter + " = :" +parameter ;
-        Object results =  session.createQuery(hql).setParameter(parameter, valueParameter).getSingleResult();
-        session.close();
+		Object results =  session.createQuery(hql).setParameter(parameter, valueParameter).getSingleResult();
+		session.close();
 
-        return  results;
+		return  results;
+	}
 
-		
+	public List<T> findMultipleObjects(String parameter, Class<?> T, Object valueParameter) {
+		Session session = HibernateUtil.getFactory();
+
+		String hql = "Select T FROM " + T.getSimpleName() + " T where T." + parameter + " = ?" ;
+		List<T> results =  session.createQuery(hql).setString(0, valueParameter.toString()).list(); //Deprecated
+		session.close();
+		return  results;
 	}
 
 	@Override
