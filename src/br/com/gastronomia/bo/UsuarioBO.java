@@ -42,7 +42,7 @@ public class UsuarioBO {
 			usuarioDAO.save(usuario);
 			return true;
 		}
-		throw new ValidationException("teste");
+		throw new ValidationException("Invalido");
 
 	}
 
