@@ -67,11 +67,4 @@ public class ReceitaBO {
 
     }
 
-//    public List<Receita> listReceitaName(String nome) throws ValidationException {
-//        if (nome != null) {
-//            return receitaDAO.listForName(nome);
-//        }
-//        throw new ValidationException("invalido");
-//    }
-
 }
