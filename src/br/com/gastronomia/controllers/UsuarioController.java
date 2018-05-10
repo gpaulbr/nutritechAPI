@@ -2,6 +2,7 @@ package br.com.gastronomia.controllers;
 
 import java.sql.SQLException;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
@@ -59,6 +60,39 @@ public class UsuarioController {
 		}
 
 		return Response.ok().entity(new StandardResponseDTO(true, "Usuario "+usuario.getNome()+ " criado com sucesso!")).status(Response.Status.ACCEPTED).build();
+	}
+
+//	@POST
+//	@Path("/auth/{authId}")
+//	@Consumes("application/json; charset=UTF-8")
+//	@Produces("application/json; charset=UTF-8")
+//	public Response validate(@PathParam("authId") String encriptedId) throws PersistenciaException, ValidationException {
+//		try {
+//			usuarioBO.aut(usuario);
+//		} catch (Exception e) {
+//			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+//		}
+//
+//		return Response.ok().entity(new StandardResponseDTO(true, "Usuario "+usuario.getNome()+ " criado com sucesso!")).status(Response.Status.ACCEPTED).build();
+//	}
+
+	@PUT
+	@Path("/auth/{encryptedId}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	//@JWTTokenNeeded
+	public Response authenticate(@PathParam("encryptedId")String encryptedId) throws PersistenciaException, ValidationException {
+		try {
+			String id = EncryptUtil.decrypt(encryptedId);
+			UsuarioBO userBO = new UsuarioBO();
+			userBO.activateUser(Long.parseLong(id));
+			System.out.println("deu ruim");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+		}
+		return Response.ok().entity(new StandardResponseDTO(true, "Usuario autenticado com sucesso!")).status(Response.Status.ACCEPTED).build();
+
 	}
 
 	@DELETE

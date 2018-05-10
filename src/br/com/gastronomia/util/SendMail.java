@@ -13,7 +13,7 @@ import org.apache.commons.mail.SimpleEmail;
  **/
 public class SendMail {
 	public SendMail() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public void envio(String emailDestinatario, String destinatario, String assunto, String corpo) {
@@ -40,7 +40,6 @@ public class SendMail {
 			email.send();
 
 		} catch (EmailException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

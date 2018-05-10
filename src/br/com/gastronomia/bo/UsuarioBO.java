@@ -12,6 +12,8 @@ import br.com.gastronomia.util.Constantes;
 import br.com.gastronomia.util.EncryptUtil;
 import br.com.gastronomia.util.MensagemContantes;
 import br.com.gastronomia.util.Validator;
+import br.com.gastronomia.util.SendMail;
+import br.com.gastronomia.util.SimpleKeyGenerator;
 
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO;
@@ -35,6 +37,12 @@ public class UsuarioBO {
 		if (usuario != null || !usuario.getSenha().isEmpty()) {
 			String encryptedPassword = EncryptUtil.encrypt2(usuario.getSenha());
 			usuario.setSenha(encryptedPassword);
+
+			SendMail sendMail = new SendMail();
+			String subject = "Confirmação de email";
+			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getId()));
+			sendMail.envio(usuario.getEmail(), usuario.getNome(), subject, body);
+
 			usuarioDAO.save(usuario);
 			return true;
 		}
