@@ -52,27 +52,6 @@ public class APIController {
             usuario.setTipo(TipoDeUsuario.USER);
             usuario.setSenha(encryptedPassword);
 
-            System.out.println(usuario.getId());
-            System.out.println("-------------");
-            try {
-                String encryptedId = EncryptUtil.encrypt2(String.valueOf(usuario.getId()));
-                System.out.println(encryptedId);
-                System.out.println("-------------");
-
-                System.out.println(EncryptUtil.decrypt(encryptedId));
-                System.out.println("-------------");
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            }
-
             try {
                 UsuarioBO usuarioBO = new UsuarioBO();
                 try {

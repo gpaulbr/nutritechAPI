@@ -7,14 +7,12 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import br.com.gastronomia.exception.PersistenciaException;
+import br.com.gastronomia.exception.ValidationException;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -141,5 +139,25 @@ public class AuthController {
 		}
 
 		return responseJson;
+	}
+
+	@PUT
+	@Path("/{encryptedMatricula}")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	//@JWTTokenNeeded
+	public Response authenticate(@PathParam("encryptedMatricula")String encryptedMatricula) throws PersistenciaException, ValidationException {
+		try {
+			String matricula = EncryptUtil.decrypt(encryptedMatricula);
+			Usuario user = usuarioDAO.findUserByMatricula(matricula);
+			usuarioBO.activateUser(user.getId());
+			System.out.println("deu bom");
+		} catch (Exception e) {
+			e.printStackTrace();
+            System.out.println("deu ruim");
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+		}
+		return Response.ok().entity(new StandardResponseDTO(true, "Usuario autenticado com sucesso!")).status(Response.Status.ACCEPTED).build();
+
 	}
 }

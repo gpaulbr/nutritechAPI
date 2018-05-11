@@ -1,5 +1,6 @@
 package br.com.gastronomia.bo;
 
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,10 @@ import br.com.gastronomia.util.MensagemContantes;
 import br.com.gastronomia.util.Validator;
 import br.com.gastronomia.util.SendMail;
 import br.com.gastronomia.util.SimpleKeyGenerator;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO;
@@ -40,7 +45,7 @@ public class UsuarioBO {
 
 			SendMail sendMail = new SendMail();
 			String subject = "Confirmação de email";
-			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getId()));
+			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getMatricula()));
 			sendMail.envio(usuario.getEmail(), usuario.getNome(), subject, body);
 
 			usuarioDAO.save(usuario);
