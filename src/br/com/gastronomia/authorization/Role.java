@@ -4,6 +4,7 @@ package br.com.gastronomia.authorization;
 public class Role {
 	public final static long ADMINISTRATOR = 2;
 	public final static long USER = 3;
+	public final static long PROFESSOR = 4;
 
 	/*
         Get the specific prime number associated with the @role
@@ -15,6 +16,9 @@ public class Role {
 
 		case "user":
 			return Role.USER;
+
+		case "professor":
+			return Role.PROFESSOR;
 
 		default:
 			return -1;

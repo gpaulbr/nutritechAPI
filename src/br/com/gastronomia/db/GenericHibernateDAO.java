@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
@@ -27,8 +28,20 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 				if (tx != null)
 					tx.rollback();
 				e.printStackTrace();
-				System.out.println("Erro de HibernateException ao salvar no GenericHibernateDAO: " + e.getMessage());
-                throw new ValidationException("invalido");
+				if(e instanceof org.hibernate.exception.ConstraintViolationException){
+					org.hibernate.exception.ConstraintViolationException constraintError = (org.hibernate.exception.ConstraintViolationException) e;
+					switch (constraintError.getConstraintName()) {
+						case "cpf_uc":
+							throw new ValidationException("CPF inserido já cadastrado");
+						case "email_uc":
+							throw new ValidationException("Email inserido já cadastrado");
+						case "matricula_uc":
+							throw new ValidationException("Matricula inserida já cadastrada");
+					}
+				} else {
+					System.out.println("Erro de HibernateException ao salvar no GenericHibernateDAO: " + e.getMessage());
+					throw new ValidationException("invalido");
+				}
 			} finally {
 				session.close();
 			}
@@ -37,7 +50,7 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Erro de Exception no salvar do GenericHibernateDAO: " + e.getMessage());
-            throw new ValidationException("invalido");
+            throw new ValidationException(e.getMessage());
 		}
     }
 

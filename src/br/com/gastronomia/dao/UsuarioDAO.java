@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
+import br.com.gastronomia.util.MensagemContantes;
 import org.hibernate.Session;
 
 import br.com.gastronomia.db.GenericHibernateDAO;

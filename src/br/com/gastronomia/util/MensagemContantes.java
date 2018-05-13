@@ -10,7 +10,7 @@ package br.com.gastronomia.util;
  **/
 public class MensagemContantes {
 
-	public static final String MSG_ERR_USUARIO_SENHA_INVALIDOS = "Usu�rio/Senha invalidos!";
+	public static final String MSG_ERR_USUARIO_SENHA_INVALIDOS = "Usuário/Senha invalidos!";
 
 
 
