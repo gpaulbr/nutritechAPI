@@ -6,8 +6,8 @@ import br.com.gastronomia.model.Receita;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
@@ -15,7 +15,7 @@ import java.util.List;
 public class GenericHibernateDAO<T> implements GenericDAO<T> {
 
 	@Override
-	public long save(T obj) throws ValidationException {
+	public long save(T obj) throws ValidationException, ConstraintViolationException{
 		try {
 			Session session = HibernateUtil.getFactory();
 			Transaction tx = null;
@@ -24,33 +24,25 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 				tx = session.beginTransaction();
 				id = (long) session.save(obj);
 				tx.commit();
-			} catch (HibernateException e) {
+			} catch (org.hibernate.exception.ConstraintViolationException e) {
+				throw e;
+			}
+			catch (HibernateException e) {
 				if (tx != null)
 					tx.rollback();
 				e.printStackTrace();
-				if(e instanceof org.hibernate.exception.ConstraintViolationException){
-					org.hibernate.exception.ConstraintViolationException constraintError = (org.hibernate.exception.ConstraintViolationException) e;
-					switch (constraintError.getConstraintName()) {
-						case "cpf_uc":
-							throw new ValidationException("CPF inserido já cadastrado");
-						case "email_uc":
-							throw new ValidationException("Email inserido já cadastrado");
-						case "matricula_uc":
-							throw new ValidationException("Matricula inserida já cadastrada");
-					}
-				} else {
-					System.out.println("Erro de HibernateException ao salvar no GenericHibernateDAO: " + e.getMessage());
-					throw new ValidationException("invalido");
-				}
 			} finally {
 				session.close();
 			}
 			System.out.println("ID: " + id);
 			return id;
-		} catch (Exception e) {
+		} catch (ConstraintViolationException e) {
+			throw e;
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Erro de Exception no salvar do GenericHibernateDAO: " + e.getMessage());
-            throw new ValidationException(e.getMessage());
+			throw new ValidationException(e.getMessage());
 		}
     }
 
