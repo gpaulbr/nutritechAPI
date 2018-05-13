@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import br.com.gastronomia.util.TipoDeUsuario;
+import org.hibernate.HibernateException;
 import br.com.gastronomia.dao.UsuarioDAO;
 import br.com.gastronomia.dto.UsuarioLoginDTO;
 import br.com.gastronomia.exception.UsuarioInativoException;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
-import br.com.gastronomia.util.Constantes;
 import br.com.gastronomia.util.EncryptUtil;
 import br.com.gastronomia.util.MensagemContantes;
 import br.com.gastronomia.util.Validator;
@@ -24,7 +24,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import javax.validation.executable.ValidateOnExecution;
 
-import javax.validation.executable.ValidateOnExecution;
+import org.hibernate.exception.ConstraintViolationException;
 
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO;
@@ -44,7 +44,7 @@ public class UsuarioBO {
 
 	}
 
-	public boolean createUser(Usuario usuario) throws ValidationException, NoSuchAlgorithmException {
+	public boolean createUser(Usuario usuario) throws NoSuchAlgorithmException, ValidationException {
 		if (usuario != null || !usuario.getSenha().isEmpty()) {
 			String encryptedPassword = EncryptUtil.encrypt2(usuario.getSenha());
 			usuario.setSenha(encryptedPassword);
@@ -54,18 +54,31 @@ public class UsuarioBO {
 			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getMatricula()));
 			sendMail.envio(usuario.getEmail(), usuario.getNome(), subject, body);
 
-			usuarioDAO.save(usuario);
-			return true;
+			try {
+				usuarioDAO.save(usuario);
+			}
+			catch (ConstraintViolationException e) {
+				switch (e.getConstraintName()) {
+					case "cpf_uc":
+						throw new ValidationException("CPF inserido já cadastrado");
+					case "email_uc":
+						throw new ValidationException("Email inserido já cadastrado");
+					case "matricula_uc":
+						throw new ValidationException("Matricula inserida já cadastrada");
+				}
+			}
+			catch (Exception e) {
+				throw new ValidationException(e.getMessage());
+			}
 		}
-		throw new ValidationException("Invalido");
-
+		return true;
 	}
 
-	public long deactivateUser(long id) throws ValidationException  {
+	public long deactivateUser(long id) throws ValidationException {
 		return usuarioDAO.alterStatus(id, false);
 	}
 
-	public long activateUser(long id) throws ValidationException  {
+	public long activateUser(long id) throws ValidationException {
 		return usuarioDAO.alterStatus(id, true);
 	}
 
