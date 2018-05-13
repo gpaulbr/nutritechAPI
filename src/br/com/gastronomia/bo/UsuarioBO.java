@@ -24,6 +24,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import javax.validation.executable.ValidateOnExecution;
 
+import javax.validation.executable.ValidateOnExecution;
+
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO;
 
