@@ -6,7 +6,7 @@ import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
 import br.com.gastronomia.util.MensagemContantes;
 import org.hibernate.Session;
-
+import br.com.gastronomia.util.TipoDeUsuario;
 import br.com.gastronomia.db.GenericHibernateDAO;
 import br.com.gastronomia.db.HibernateUtil;
 
@@ -22,6 +22,10 @@ public class UsuarioDAO extends GenericHibernateDAO<Usuario> {
 	
 	public Usuario findUserByMatricula(String matricula) {
 		return (Usuario) findSingleObject("matricula", Usuario.class, matricula);
+	}
+
+	public List<Usuario> listUsersByType(TipoDeUsuario tipo) {
+		return (List<Usuario>) findMultipleObjects("tipo", Usuario.class, tipo.name());
 	}
 
 
