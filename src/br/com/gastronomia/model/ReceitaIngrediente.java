@@ -39,6 +39,9 @@ public class ReceitaIngrediente implements Serializable {
     @Column(name = "CustoKg")
     private double custoKg;
 
+    @Column(name = "FatorCorrecao")
+    private double fatorCorrecao;
+
     @Column(name = "PesoG")
     private double pesoG;
 
@@ -59,6 +62,14 @@ public class ReceitaIngrediente implements Serializable {
 
     public void setReceita(Receita receita) {
         this.receita = receita;
+    }
+
+    public double getFatorCorrecao() {
+        return fatorCorrecao;
+    }
+
+    public void setFatorCorrecao(double fatorCorrecao) {
+        this.fatorCorrecao = fatorCorrecao;
     }
 
     public double getCustoKg() {
