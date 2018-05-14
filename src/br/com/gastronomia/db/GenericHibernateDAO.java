@@ -2,9 +2,11 @@ package br.com.gastronomia.db;
 
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.imp.GenericDAO;
+import br.com.gastronomia.model.Receita;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
 public class GenericHibernateDAO<T> implements GenericDAO<T> {
 
 	@Override
-	public long save(T obj) throws ValidationException {
+	public long save(T obj) throws ValidationException, ConstraintViolationException{
 		try {
 			Session session = HibernateUtil.getFactory();
 			Transaction tx = null;
@@ -22,21 +24,25 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 				tx = session.beginTransaction();
 				id = (long) session.save(obj);
 				tx.commit();
-			} catch (HibernateException e) {
+			} catch (org.hibernate.exception.ConstraintViolationException e) {
+				throw e;
+			}
+			catch (HibernateException e) {
 				if (tx != null)
 					tx.rollback();
 				e.printStackTrace();
-				System.out.println("Erro de HibernateException ao salvar no GenericHibernateDAO: " + e.getMessage());
-                throw new ValidationException("invalido");
 			} finally {
 				session.close();
 			}
 			System.out.println("ID: " + id);
 			return id;
-		} catch (Exception e) {
+		} catch (ConstraintViolationException e) {
+			throw e;
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Erro de Exception no salvar do GenericHibernateDAO: " + e.getMessage());
-            throw new ValidationException("invalido");
+			throw new ValidationException(e.getMessage());
 		}
     }
 
@@ -129,14 +135,21 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 	@Override
 	public Object findSingleObject(String parameter, Class<?> T, Object valueParameter) {
 		Session session = HibernateUtil.getFactory();
-		
+
 		String hql = "Select T FROM " + T.getSimpleName() + " T  where T." + parameter + " = :" +parameter ;
-        Object results =  session.createQuery(hql).setParameter(parameter, valueParameter).getSingleResult();
-        session.close();
+		Object results =  session.createQuery(hql).setParameter(parameter, valueParameter).getSingleResult();
+		session.close();
 
-        return  results;
+		return  results;
+	}
 
-		
+	public List<T> findMultipleObjects(String parameter, Class<?> T, Object valueParameter) {
+		Session session = HibernateUtil.getFactory();
+
+		String hql = "Select T FROM " + T.getSimpleName() + " T where T." + parameter + " = ?" ;
+		List<T> results =  session.createQuery(hql).setString(0, valueParameter.toString()).list(); //Deprecated
+		session.close();
+		return  results;
 	}
 
 	@Override

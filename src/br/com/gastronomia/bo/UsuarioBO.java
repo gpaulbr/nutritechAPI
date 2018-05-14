@@ -4,14 +4,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import org.hibernate.HibernateException;
 import br.com.gastronomia.dao.UsuarioDAO;
+import br.com.gastronomia.dto.UsuarioLoginDTO;
+import br.com.gastronomia.exception.UsuarioInativoException;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
-import br.com.gastronomia.util.Constantes;
 import br.com.gastronomia.util.EncryptUtil;
 import br.com.gastronomia.util.MensagemContantes;
 import br.com.gastronomia.util.Validator;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO;
@@ -31,22 +34,35 @@ public class UsuarioBO {
 
 	}
 
-	public boolean createUser(Usuario usuario) throws ValidationException, NoSuchAlgorithmException {
+	public boolean createUser(Usuario usuario) throws NoSuchAlgorithmException, ValidationException {
 		if (usuario != null || !usuario.getSenha().isEmpty()) {
 			String encryptedPassword = EncryptUtil.encrypt2(usuario.getSenha());
 			usuario.setSenha(encryptedPassword);
-			usuarioDAO.save(usuario);
-			return true;
+			try {
+				usuarioDAO.save(usuario);
+			}
+			catch (ConstraintViolationException e) {
+				switch (e.getConstraintName()) {
+					case "cpf_uc":
+						throw new ValidationException("CPF inserido já cadastrado");
+					case "email_uc":
+						throw new ValidationException("Email inserido já cadastrado");
+					case "matricula_uc":
+						throw new ValidationException("Matricula inserida já cadastrada");
+				}
+			}
+			catch (Exception e) {
+				throw new ValidationException(e.getMessage());
+			}
 		}
-		throw new ValidationException("invalido");
-
+		return true;
 	}
 
-	public long deactivateUser(long id) throws ValidationException  {
+	public long deactivateUser(long id) throws ValidationException {
 		return usuarioDAO.alterStatus(id, false);
 	}
 
-	public long activateUser(long id) throws ValidationException  {
+	public long activateUser(long id) throws ValidationException {
 		return usuarioDAO.alterStatus(id, true);
 	}
 
@@ -69,16 +85,18 @@ public class UsuarioBO {
 		return newUsuario;
 	}
 
-	public Usuario userExists(Usuario usuarioLogin) throws NoSuchAlgorithmException, ValidationException {
+	public Usuario userExists(UsuarioLoginDTO usuarioLogin) throws NoSuchAlgorithmException, ValidationException, UsuarioInativoException {
 		usuarioLogin.setSenha(EncryptUtil.encrypt2(usuarioLogin.getSenha()));
 		Usuario returnedUsuario = null;
-		if(usuarioLogin.getEmail() == null){
-			returnedUsuario = usuarioDAO.findUserByMatricula(usuarioLogin.getMatricula());
-		} else {
+		try {
 			returnedUsuario = usuarioDAO.findUserByEmail(usuarioLogin.getEmail());
+		} catch(Exception e) {
+			throw new ValidationException(MensagemContantes.MSG_ERR_USUARIO_SENHA_INVALIDOS);
 		}
 		if (!usuarioLogin.getSenha().equals(returnedUsuario.getSenha()))
 			throw new ValidationException(MensagemContantes.MSG_ERR_USUARIO_SENHA_INVALIDOS);
+		if (!returnedUsuario.isStatus())
+			throw new UsuarioInativoException("Usuário Inativo");
 		return returnedUsuario;
 	}
 

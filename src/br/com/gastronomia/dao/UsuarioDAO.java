@@ -4,17 +4,13 @@ import java.util.List;
 
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
+import br.com.gastronomia.util.MensagemContantes;
 import org.hibernate.Session;
 
 import br.com.gastronomia.db.GenericHibernateDAO;
 import br.com.gastronomia.db.HibernateUtil;
 
 public class UsuarioDAO extends GenericHibernateDAO<Usuario> {
-	public List<Usuario> listForName(Object User, String q) {
-		Session session = HibernateUtil.getFactory();
-		List<Usuario> usuarios = session.getNamedQuery("findUserForName").setParameter("userName", q).list();
-		return usuarios;
-	}
 
 	public Usuario findUserByCPF(String cpf) {
 		return (Usuario) findSingleObject("cpf", Usuario.class, cpf);

@@ -52,11 +52,10 @@ public class UsuarioController {
 	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
 	public Response create(Usuario usuario) throws PersistenciaException, ValidationException {
-
 		try {
 			usuarioBO.createUser(usuario);
 		} catch (Exception e) {
-			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+			return Response.ok(e.getMessage()).status(Response.Status.BAD_REQUEST).build();
 		}
 
 		return Response.ok().entity(new StandardResponseDTO(true, "Usuario "+usuario.getNome()+ " criado com sucesso!")).status(Response.Status.ACCEPTED).build();

@@ -21,6 +21,17 @@ import java.util.List;
  **/
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@NamedQueries({
+        @NamedQuery(
+                name = "getReceitaByIdUsuario",
+                query = "from Receita r join  Usuario u " +
+                        "where u.id =:pIdUsuario"
+        ),
+        @NamedQuery(
+                name = "findUserByName",
+                query = "from Receita r join Usuario u where u.nome = 'Admin' "
+        )
+})
 @Table(name= "Receita")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Receita implements Serializable {
@@ -74,7 +85,7 @@ public class Receita implements Serializable {
     @JsonManagedReference
     private Set<ReceitaIngrediente> receitaIngrediente = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, targetEntity=Usuario.class, fetch=FetchType.EAGER)
     @JoinColumn(name = "IdUsuario", nullable = false)
     private Usuario professor;
 

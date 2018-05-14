@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import br.com.gastronomia.dto.UsuarioLoginDTO;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,7 +50,7 @@ public class AuthController {
 	@Path("/login")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public Response login(Usuario usuarioLogin) throws IOException {
+	public Response login(UsuarioLoginDTO usuarioLogin) throws IOException {
 		Usuario usuario;
 		HashMap<String, Object> responsed = new HashMap<>();
 		Token token=new Token();
@@ -59,9 +60,9 @@ public class AuthController {
 			token.setToken(TokenGenerator.issueToken(mapper.writeValueAsString(usuario)));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Response.status(UNAUTHORIZED).build();
+			return Response.ok(e.getMessage()).status(UNAUTHORIZED).build();
 		}
-		return Response.ok().entity(token).build();
+		return Response.ok(usuario).build();
 	}
 
 	/**
