@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+import java.util.Date;
 
 @Path("receitas")
 public class ReceitaController {
@@ -37,6 +38,20 @@ public class ReceitaController {
         }
     }
 
+    @GET
+    @Path("/now")
+    @Produces("application/json; charset=UTF-8")
+    //@JWTTokenNeeded
+    public Response getDateTimeNow() throws PersistenciaException, SQLException {
+        try {
+            Date data = new Date();
+            return Response.ok().entity(data).status(Response.Status.ACCEPTED).build();
+
+        } catch (Exception e) {
+            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
     @POST
     @Path("/")
     @Consumes("application/json; charset=UTF-8")
@@ -45,6 +60,7 @@ public class ReceitaController {
     public Response create(Receita receita) throws PersistenciaException, ValidationException {
 
         try {
+            receita.setDatahora(new Date());
             System.out.println(receita);
             receitaBO.createReceita(receita);
         } catch (Exception e) {
@@ -75,19 +91,6 @@ public class ReceitaController {
 
         try {
             return Response.ok().entity(receitaBO.getReceitaById(id)).status(Response.Status.ACCEPTED).build();
-        } catch (Exception e) {
-            return Response.ok().status(Response.Status.BAD_REQUEST).build();
-        }
-
-    }
-
-    @GET
-    @Path("/usuario/{id}")
-    @Produces("application/json; charset=UTF-8")
-    //@JWTTokenNeeded
-    public Response searchByIDUsuario(@PathParam("id") Long id) throws PersistenciaException, ValidationException {
-        try {
-            return Response.ok().entity(receitaBO.getReceitaByIdUsuario(id)).status(Response.Status.ACCEPTED).build();
         } catch (Exception e) {
             return Response.ok().status(Response.Status.BAD_REQUEST).build();
         }
