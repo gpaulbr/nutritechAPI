@@ -5,12 +5,16 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
+import java.util.Date;
 
 /**
  * Classe modelo para o acesso ao banco de dados.
@@ -21,58 +25,59 @@ import java.util.List;
  **/
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@NamedQueries({
-        @NamedQuery(
-                name = "getReceitaByIdUsuario",
-                query = "from Receita r join  Usuario u " +
-                        "where u.id =:pIdUsuario"
-        ),
-        @NamedQuery(
-                name = "findUserByName",
-                query = "from Receita r join Usuario u where u.nome = 'Admin' "
-        )
-})
 @Table(name= "Receita")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Receita implements Serializable {
 
     private static final long serialVersionUID = -789863172532826108L;
-    private enum Tipo {
+
+    private enum
+    Tipo {
         PUBLICO, PRIVADO, NULL
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdReceita")
     private long id;
 
     @NotEmpty
-    @Column(name = "Nome", unique = true)
+    @Column(name = "Nome")
     private String nome;
+
+    @Column(name= "Publicada", nullable = false)
+    private boolean publicada;
 
     @Column(name= "Status", nullable = false)
     private boolean status;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="Passos", joinColumns=@JoinColumn(name="IdReceita"))
+    @CollectionTable(name="Passos", joinColumns = @JoinColumn(name = "IdReceita"))
     @Column(name = "Passos", nullable = false)
-    private List<String> passos = new ArrayList<String>();
+    private Set<String> passos = new HashSet<>();
 
     @Column(name = "Rendimento", nullable = false)
-    private double rendimento;
+    private String rendimento;
 
     @Column(name = "Tempo", nullable = false)
     private String tempo;
 
+    @Column(name = "Peso", nullable = false)
+    private double peso;
+
     @Column(name = "Imagem", nullable = false)
     private String imagem;
 
+    @Column(name = "Dificuldade", nullable = true)
+    @Max(5)
+    private int dificuldade;
+
     @Column(name = "Tipo", nullable = false)
     private Tipo tipo;
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="ReceitaUsuario", joinColumns=
-            {@JoinColumn(name="IdReceita")}, inverseJoinColumns=
+    @JoinTable(name="ReceitaUsuarios",
+            joinColumns=
+                    {@JoinColumn(name="IdReceita"), }, inverseJoinColumns=
             {@JoinColumn(name="IdUsuario")})
     private Set<Usuario> criadores = new HashSet<>();
 
@@ -85,9 +90,13 @@ public class Receita implements Serializable {
     @JsonManagedReference
     private Set<ReceitaIngrediente> receitaIngrediente = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST, targetEntity=Usuario.class, fetch=FetchType.EAGER)
-    @JoinColumn(name = "IdUsuario", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "IdProfessor", nullable = false, foreignKey=@ForeignKey(name = "FK_RECEITA_PROFESSOR"))
     private Usuario professor;
+
+    @Column(name = "Data", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datahora;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "GrupoReceita", nullable = false)
@@ -110,25 +119,33 @@ public class Receita implements Serializable {
         this.nome = nome;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean getStatus() { return status; }
+
+    public void setStatus(boolean status) { this.status = status; }
+
+    public boolean getPublicada() {
+        return publicada;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setPublicada(boolean publicada) {
+        this.publicada = publicada;
     }
 
-    public List<String> getPassos() { return passos; }
+    public int getDificuldade() { return dificuldade; }
 
-    public void setPassos(List<String> passos) {
+    public void setDificuldade(int dificuldade) { this.dificuldade = dificuldade; }
+
+    public Set<String> getPassos() { return passos; }
+
+    public void setPassos(Set<String> passos) {
         this.passos = passos;
     }
 
-    public double getRendimento() {
+    public String getRendimento() {
         return rendimento;
     }
 
-    public void setRendimento(double rendimento) {
+    public void setRendimento(String rendimento) {
         this.rendimento = rendimento;
     }
 
@@ -138,6 +155,14 @@ public class Receita implements Serializable {
 
     public void setTempo(String tempo) {
         this.tempo = tempo;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
     }
 
     public Set<Usuario> getCriadores() {
@@ -188,9 +213,17 @@ public class Receita implements Serializable {
         this.tipo = tipo;
     }
 
+    public Date getDatahora() {
+        return datahora;
+    }
+
+    public void setDatahora(Date datahora) {
+        this.datahora = datahora;
+    }
+
     @Override
     public String toString() {
-        return "Ingrediente{" +
+        return "Receita{" +
                 "id=" + id +
                 ", nome='" + nome +
                 ", passos=" + passos.toString() +
@@ -201,7 +234,7 @@ public class Receita implements Serializable {
                 ", ingredienteReceita=" + receitaIngrediente +
                 ", criadores=" + criadores +
                 ", professor=" + professor +
-                ", status=" + status +
+                ", publicada=" + publicada +
                 '}';
     }
 }

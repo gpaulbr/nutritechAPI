@@ -46,6 +46,32 @@ public class UsuarioController {
 
 	}
 
+	@GET
+	@Path("/professores")
+	@Produces("application/json; charset=UTF-8")
+	//@JWTTokenNeeded
+	public Response listProfs() throws PersistenciaException, SQLException {
+		try {
+			return Response.ok().entity(usuarioBO.listProf()).status(Response.Status.ACCEPTED).build();
+		} catch (Exception e) {
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+		}
+
+	}
+
+	@GET
+	@Path("/alunos")
+	@Produces("application/json; charset=UTF-8")
+	//@JWTTokenNeeded
+	public Response listAlunos() throws PersistenciaException, SQLException {
+		try {
+			return Response.ok().entity(usuarioBO.listAlunos()).status(Response.Status.ACCEPTED).build();
+		} catch (Exception e) {
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+		}
+
+	}
+
 	@POST
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
@@ -55,7 +81,7 @@ public class UsuarioController {
 		try {
 			usuarioBO.createUser(usuario);
 		} catch (Exception e) {
-			return Response.ok(e.getMessage()).status(Response.Status.BAD_REQUEST).build();
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
 		}
 
 		return Response.ok().entity(new StandardResponseDTO(true, "Usuario "+usuario.getNome()+ " criado com sucesso!")).status(Response.Status.ACCEPTED).build();

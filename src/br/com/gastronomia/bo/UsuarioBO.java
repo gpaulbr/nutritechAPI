@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import br.com.gastronomia.util.TipoDeUsuario;
 import org.hibernate.HibernateException;
 import br.com.gastronomia.dao.UsuarioDAO;
 import br.com.gastronomia.dto.UsuarioLoginDTO;
@@ -107,6 +108,23 @@ public class UsuarioBO {
 		listUsers.put("Usuarios", usuarios);
 		return listUsers;
 	}
+
+	public HashMap<String, List<Usuario>> listProf() {
+		ArrayList<Usuario> usuarios = null;
+		HashMap<String, List<Usuario>> listUsers = new HashMap<String, List<Usuario>>();
+		usuarios = (ArrayList<Usuario>) usuarioDAO.listUsersByType(TipoDeUsuario.PROFESSOR);
+		listUsers.put("Usuarios", usuarios);
+		return listUsers;
+	}
+
+	public HashMap<String, List<Usuario>> listAlunos() {
+		ArrayList<Usuario> usuarios = null;
+		HashMap<String, List<Usuario>> listUsers = new HashMap<String, List<Usuario>>();
+		usuarios = (ArrayList<Usuario>) usuarioDAO.listUsersByType(TipoDeUsuario.USUARIO);
+		listUsers.put("Usuarios", usuarios);
+		return listUsers;
+	}
+
 
 	public Usuario getUserByCpf(Usuario usuarioLogin) throws ValidationException {
 		if (usuarioLogin != null) {
