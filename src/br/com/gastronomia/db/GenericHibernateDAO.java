@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
+
 import java.util.List;
 
 @SuppressWarnings("unchecked")
@@ -14,7 +15,7 @@ import java.util.List;
 public class GenericHibernateDAO<T> implements GenericDAO<T> {
 
 	@Override
-	public long save(T obj) throws ValidationException, org.hibernate.exception.ConstraintViolationException {
+	public long save(T obj) throws ValidationException, ConstraintViolationException{
 		try {
 			Session session = HibernateUtil.getFactory();
 			Transaction tx = null;
@@ -30,20 +31,6 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 				if (tx != null)
 					tx.rollback();
 				e.printStackTrace();
-				if(e instanceof org.hibernate.exception.ConstraintViolationException){
-					org.hibernate.exception.ConstraintViolationException constraintError = (org.hibernate.exception.ConstraintViolationException) e;
-					switch (constraintError.getConstraintName()) {
-						case "cpf_uc":
-							throw new ValidationException("CPF inserido já cadastrado");
-						case "email_uc":
-							throw new ValidationException("Email inserido já cadastrado");
-						case "matricula_uc":
-							throw new ValidationException("Matricula inserida já cadastrada");
-					}
-				} else {
-					System.out.println("Erro de HibernateException ao salvar no GenericHibernateDAO: " + e.getMessage());
-					throw new ValidationException("invalido");
-				}
 			} finally {
 				session.close();
 			}
