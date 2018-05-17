@@ -25,6 +25,15 @@ public class AtributoBO {
 	}
 
 	public boolean createAtributo(Atributo atributo) throws ValidationException, NoSuchAlgorithmException {
+
+		List<Atributo> atributos = atributoDAO.listAllAtributos();
+
+		for (Atributo a : atributos) {
+			if(a.getNome().equalsIgnoreCase(atributo.getNome())) {
+				throw new ValidationException("Atributo já existente.");
+			}
+		}
+
 		if (atributo != null) {
 			atributoDAO.save(atributo);
 			return true;
