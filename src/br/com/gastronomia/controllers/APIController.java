@@ -1,16 +1,22 @@
 package br.com.gastronomia.controllers;
 
+import br.com.gastronomia.bo.UsuarioBO;
 import br.com.gastronomia.dao.UsuarioDAO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
 import br.com.gastronomia.util.EncryptUtil;
+import br.com.gastronomia.util.SendMail;
 import br.com.gastronomia.util.TipoDeUsuario;
 import br.com.gastronomia.util.Util;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Path("/")
@@ -37,7 +43,6 @@ public class APIController {
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-
             usuario = new Usuario();
             usuario.setNome("Admin");
             usuario.setStatus(true);
@@ -48,7 +53,12 @@ public class APIController {
             usuario.setSenha(encryptedPassword);
 
             try {
-                (new UsuarioDAO()).save(usuario);
+                UsuarioBO usuarioBO = new UsuarioBO();
+                try {
+                    usuarioBO.createUser(usuario);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 return Response.ok().entity(usuario).build();
             } catch (ValidationException e) {
                 e.printStackTrace();

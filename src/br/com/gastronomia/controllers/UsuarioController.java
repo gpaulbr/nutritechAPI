@@ -2,6 +2,7 @@ package br.com.gastronomia.controllers;
 
 import java.sql.SQLException;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
@@ -101,6 +102,7 @@ public class UsuarioController {
 		return Response.ok().entity(new StandardResponseDTO(true, "Usuario desativado com sucesso!")).status(Response.Status.ACCEPTED).build();
 
 	}
+
 	@GET
 	@Path("/{id}")
 	@Produces("application/json; charset=UTF-8")

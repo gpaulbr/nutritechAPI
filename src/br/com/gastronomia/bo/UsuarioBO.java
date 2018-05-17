@@ -1,5 +1,6 @@
 package br.com.gastronomia.bo;
 
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,16 @@ import br.com.gastronomia.model.Usuario;
 import br.com.gastronomia.util.EncryptUtil;
 import br.com.gastronomia.util.MensagemContantes;
 import br.com.gastronomia.util.Validator;
+import br.com.gastronomia.util.SendMail;
+import br.com.gastronomia.util.SimpleKeyGenerator;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import javax.validation.executable.ValidateOnExecution;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 import javax.validation.executable.ValidateOnExecution;
 import org.hibernate.exception.ConstraintViolationException;
@@ -40,6 +51,13 @@ public class UsuarioBO {
 		if (usuario != null || !usuario.getSenha().isEmpty()) {
 			String encryptedPassword = EncryptUtil.encrypt2(usuario.getSenha());
 			usuario.setSenha(encryptedPassword);
+
+			SendMail sendMail = new SendMail();
+			String subject = "Confirmação de email";
+//			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getMatricula()));
+			String body = "Bem Vindo ao NUTRITECH. Acesse  o link http://www.homo.ages.pucrs.br/nutritech-front/#/ para começar";
+			sendMail.envio(usuario.getEmail(), usuario.getNome(), subject, body);
+
 			try {
 				usuarioDAO.save(usuario);
 			}
