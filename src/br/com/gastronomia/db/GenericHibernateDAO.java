@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
+
 import java.util.List;
 
 @SuppressWarnings("unchecked")
@@ -14,7 +15,7 @@ import java.util.List;
 public class GenericHibernateDAO<T> implements GenericDAO<T> {
 
 	@Override
-	public long save(T obj) throws ValidationException, org.hibernate.exception.ConstraintViolationException {
+	public long save(T obj) throws ValidationException, ConstraintViolationException{
 		try {
 			Session session = HibernateUtil.getFactory();
 			Transaction tx = null;
