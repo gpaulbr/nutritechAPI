@@ -30,7 +30,7 @@ public class APIController {
 		Usuario usuario = null;
 
 		try {
-		    usuario = (new UsuarioDAO()).findUserByMatricula("14201623");
+		    usuario = (new UsuarioDAO()).findUserByMatricula("101010");
         } finally {
 
 		    if (usuario != null){
