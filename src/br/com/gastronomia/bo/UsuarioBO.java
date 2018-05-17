@@ -15,6 +15,7 @@ import br.com.gastronomia.util.EncryptUtil;
 import br.com.gastronomia.util.MensagemContantes;
 import br.com.gastronomia.util.Validator;
 
+import javax.validation.executable.ValidateOnExecution;
 import org.hibernate.exception.ConstraintViolationException;
 
 public class UsuarioBO {

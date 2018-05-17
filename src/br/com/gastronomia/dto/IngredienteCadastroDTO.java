@@ -12,7 +12,15 @@ public class IngredienteCadastroDTO {
     private boolean status;
     private TipoDeIngrediente tipo;
 
-    private Set<IngredienteAtributoDto> ingredienteAtributos;
+    private Set<IngredienteAtributoDto> atributos;
+
+    public Set<IngredienteAtributoDto> getAtributos() {
+        return atributos;
+    }
+
+    public void setAtributos(Set<IngredienteAtributoDto> atributos) {
+        this.atributos = atributos;
+    }
 
     public IngredienteCadastroDTO() { }
 
@@ -36,9 +44,6 @@ public class IngredienteCadastroDTO {
         return tipo;
     }
 
-    public Set<IngredienteAtributoDto> getIngredienteAtributos() {
-        return ingredienteAtributos;
-    }
 
     public void setNome(String nome) {
         this.nome = nome;
@@ -58,9 +63,5 @@ public class IngredienteCadastroDTO {
 
     public void setTipo(TipoDeIngrediente tipo) {
         this.tipo = tipo;
-    }
-
-    public void setIngredienteAtributos(Set<IngredienteAtributoDto> ingredienteAtributos) {
-        this.ingredienteAtributos = ingredienteAtributos;
     }
 }
