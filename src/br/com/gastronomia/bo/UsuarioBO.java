@@ -51,7 +51,8 @@ public class UsuarioBO {
 
 			SendMail sendMail = new SendMail();
 			String subject = "Confirmação de email";
-			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getMatricula()));
+//			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getMatricula()));
+			String body = "Bem Vindo ao NUTRITECH. Acesse  o link http://www.homo.ages.pucrs.br/nutritech-front/#/ para começar";
 			sendMail.envio(usuario.getEmail(), usuario.getNome(), subject, body);
 
 			try {
