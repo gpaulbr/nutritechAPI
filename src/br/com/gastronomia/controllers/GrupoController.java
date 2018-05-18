@@ -60,11 +60,12 @@ public class GrupoController {
 			grupoReceitasBO.createGroup(grupoReceitas);
 
 		} catch (Exception e) {
-			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+			return Response.ok().entity(new StandardResponseDTO(true, e.getMessage())).status(Response.Status.BAD_REQUEST).build();
 		}
 
 		return Response.ok().entity(new StandardResponseDTO(true, "Grupo de Receita "+grupoReceitas.getNome()+ " criado com sucesso!")).status(Response.Status.ACCEPTED).build();
 	}
+
 
 	@DELETE
 	@Path("/{id}")
