@@ -25,9 +25,14 @@ public class AtributoBO {
 	}
 
 	public boolean createAtributo(Atributo atributo) throws ValidationException, NoSuchAlgorithmException {
+
 		if (atributo != null) {
-			atributoDAO.save(atributo);
-			return true;
+			try {
+				atributoDAO.save(atributo);
+				return true;
+			} catch (Exception e) {
+				throw new ValidationException("Atributo já existente.");
+			}
 		}
 		throw new ValidationException("invalido");
 
