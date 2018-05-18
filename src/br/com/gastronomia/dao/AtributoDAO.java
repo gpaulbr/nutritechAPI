@@ -35,4 +35,9 @@ public class AtributoDAO extends GenericHibernateDAO<Atributo> {
 		atributo.setStatus(status);
 		return merge(atributo);
 	}
+
+	public List<Atributo> listAllAtributos(){
+		List<Atributo> atributos = listAll(Atributo.class);
+		return atributos;
+	}
 }

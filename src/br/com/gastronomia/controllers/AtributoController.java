@@ -58,7 +58,7 @@ public class AtributoController {
 		try {
 			atributoBO.createAtributo(atributo);
 		} catch (Exception e) {
-			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+			return Response.ok().entity(new StandardResponseDTO(true, e.getMessage())).status(Response.Status.BAD_REQUEST).build();
 		}
 
 		return Response.ok().entity(new StandardResponseDTO(true, "Atributo "+atributo.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();

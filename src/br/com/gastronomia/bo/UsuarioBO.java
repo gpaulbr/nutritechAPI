@@ -1,22 +1,17 @@
 package br.com.gastronomia.bo;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import br.com.gastronomia.util.TipoDeUsuario;
-import org.hibernate.HibernateException;
 import br.com.gastronomia.dao.UsuarioDAO;
 import br.com.gastronomia.dto.UsuarioLoginDTO;
 import br.com.gastronomia.exception.UsuarioInativoException;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
-import br.com.gastronomia.util.EncryptUtil;
-import br.com.gastronomia.util.MensagemContantes;
-import br.com.gastronomia.util.Validator;
-
-import javax.validation.executable.ValidateOnExecution;
+import br.com.gastronomia.util.*;
 import org.hibernate.exception.ConstraintViolationException;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO;
@@ -40,6 +35,13 @@ public class UsuarioBO {
 		if (usuario != null || !usuario.getSenha().isEmpty()) {
 			String encryptedPassword = EncryptUtil.encrypt2(usuario.getSenha());
 			usuario.setSenha(encryptedPassword);
+
+			SendMail sendMail = new SendMail();
+			String subject = "Confirmação de email";
+//			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getMatricula()));
+			String body = "Bem Vindo ao NUTRITECH. Acesse  o link http://www.homo.ages.pucrs.br/nutritech-front/#/ para começar";
+			sendMail.envio(usuario.getEmail(), usuario.getNome(), subject, body);
+
 			try {
 				usuarioDAO.save(usuario);
 			}
