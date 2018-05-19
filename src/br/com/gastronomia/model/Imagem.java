@@ -1,12 +1,11 @@
 package br.com.gastronomia.model;
 
-import java.awt.image.BufferedImage;
-import java.io.Serializable;
-import java.sql.Blob;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import java.util.Arrays;
 
 
 @Entity
@@ -17,14 +16,17 @@ public class Imagem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdImagem")
+    @Column(name = "Id")
     private long id;
 
     @NotEmpty
-    @Column(name = "FilePath", unique = true)
-    private String filePath;
+    @Column(name = "Ext")
+    private String ext;
 
-    private Blob image;
+    @NotEmpty
+    @Lob
+    @Column(name = "Base64")
+    private byte[] base64;
 
     /**
      * Construtor vazio.
@@ -35,40 +37,36 @@ public class Imagem implements Serializable {
 
     }
 
-    public Imagem(String filePath) {
-        this.filePath = filePath;
-    }
-
     public long getId() {
         return id;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public Blob getImagem() {
-        return image;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public String getExt() {
+        return ext;
     }
 
-    public void setImagem(Blob image) {
-        this.image = image;
+    public void setExt(String ext) {
+        this.ext = ext;
     }
 
+    public byte[] getBase64() {
+        return base64;
+    }
+
+    public void setBase64(byte[] base64) {
+        this.base64 = base64;
+    }
 
     @Override
     public String toString() {
-        return "Imagem {" +
-                "id='" + id +
-                ", filepath='" + filePath +
+        return "Imagem{" +
+                "id=" + id +
+                ", ext='" + ext + '\'' +
+                ", base64=" + Arrays.toString(base64) +
                 '}';
     }
 }

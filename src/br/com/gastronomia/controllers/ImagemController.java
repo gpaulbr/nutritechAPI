@@ -7,14 +7,12 @@ import br.com.gastronomia.exception.PersistenciaException;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Imagem;
 import br.com.gastronomia.util.EncryptUtil;
-import br.com.gastronomia.util.WriteImage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 
 @Path("imagens")
@@ -43,23 +41,12 @@ public class ImagemController {
 	@POST
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
-	@Produces("image/jpeg")
+	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
 	public Response create(Imagem imagem) throws PersistenciaException, ValidationException {
 
 		System.out.println("Criando imagem");
 		try {
-//			BufferedImage bi = WriteImage.imageFromBytes(imagem.getImage());
-//			if(bi == null) {
-//				return Response.ok().entity(new StandardResponseDTO(false, "Conversão de bytes para bufferedImage falhou")).status(Response.Status.ACCEPTED).build();
-//			}
-//			String path = WriteImage.write(bi, String.valueOf(imagem.hashCode()));
-			String path = WriteImage.write(imagem.getImagem(), String.valueOf(imagem.hashCode()));
-			System.out.printf("Imagem em path %s\n", path);
-			if(path == null) {
-				return Response.ok().entity(new StandardResponseDTO(false, "Salvamento da imagem em path falhou")).status(Response.Status.ACCEPTED).build();
-			}
-			imagem.setFilePath(path);
 			imagemBO.createImagem(imagem);
 		} catch (Exception e) {
 			return Response.ok().status(Response.Status.BAD_REQUEST).build();

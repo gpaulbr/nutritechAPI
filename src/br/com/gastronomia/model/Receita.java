@@ -66,13 +66,8 @@ public class Receita implements Serializable {
     @Column(name = "Peso", nullable = false)
     private double peso;
 
-    @OneToMany(
-            mappedBy = "receita",
-            fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.ALL
-            })
-    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Imagem", nullable = false, foreignKey=@ForeignKey(name = "FK_RECEITA_IMAGEM"))
     private Imagem imagem;
 
     @Column(name = "Dificuldade", nullable = true)
