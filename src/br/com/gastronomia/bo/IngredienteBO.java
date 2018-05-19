@@ -9,6 +9,7 @@ import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Ingrediente;
 import br.com.gastronomia.model.IngredienteAtributo;
 import br.com.gastronomia.model.Usuario;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.lang.reflect.Array;
 import java.security.NoSuchAlgorithmException;
@@ -44,18 +45,27 @@ public class IngredienteBO {
 
 	public boolean createIngrediente(IngredienteCadastroDTO ingredienteDto) throws ValidationException, NoSuchAlgorithmException {
 		if (ingredienteDto != null) {
-			Usuario usuario = usuarioDAO.findUserByID(ingredienteDto.getIdCriador());
-			Ingrediente ingrediente = new Ingrediente();
-			ingrediente.setIngredienteInfoCadastro(ingredienteDto, usuario);
-			for (IngredienteAtributoDto ingAtr: ingredienteDto.getAtributos()) {
-				ingrediente.addIngredienteAtributo(atributoDAO.findAtributoByID(ingAtr.getIdAtributo()), ingAtr.getValor());
-			}
-			ingredienteDAO.save(ingrediente);
-			return true;
-		}
-		throw new ValidationException("invalido");
+			try {
+				Usuario usuario = usuarioDAO.findUserByID(ingredienteDto.getIdCriador());
+				Ingrediente ingrediente = new Ingrediente();
+				ingrediente.setIngredienteInfoCadastro(ingredienteDto, usuario);
 
+				for (IngredienteAtributoDto ingAtr: ingredienteDto.getAtributos()) {
+					ingrediente.addIngredienteAtributo(atributoDAO.findAtributoByID(ingAtr.getIdAtributo()), ingAtr.getValor());
+				}
+				ingredienteDAO.save(ingrediente);
+				return true;
+			} catch (ValidationException | NullPointerException e) {
+				if(e instanceof ValidationException) {
+					throw new ValidationException("Ingrediente já existente.");
+				} else {
+					throw new ValidationException("Erro no cadastro.");
+				}
+			}
+		}
+		return false;
 	}
+
 
 	public HashMap<String, List<Ingrediente>> listIngrediente() {
 		ArrayList<Ingrediente> ingredientes = null;

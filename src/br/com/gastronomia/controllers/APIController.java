@@ -38,11 +38,6 @@ public class APIController {
             }
 
             String encryptedPassword = null;
-            try {
-                encryptedPassword = EncryptUtil.encrypt2("Ages2017");
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
             usuario = new Usuario();
             usuario.setNome("Admin");
             usuario.setStatus(true);
@@ -50,7 +45,7 @@ public class APIController {
             usuario.setCpf("11111111111");
             usuario.setMatricula("101010");
             usuario.setTipo(TipoDeUsuario.ADMIN);
-            usuario.setSenha(encryptedPassword);
+            usuario.setSenha("Ages2017");
 
             try {
                 UsuarioBO usuarioBO = new UsuarioBO();

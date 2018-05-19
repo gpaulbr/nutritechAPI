@@ -49,7 +49,7 @@ public class IngredienteController {
 			System.out.println(ingredienteDto);
 			ingredienteBO.createIngrediente(ingredienteDto);
 		} catch (Exception e) {
-			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+			return Response.ok().entity(new StandardResponseDTO(true, e.getMessage())).status(Response.Status.BAD_REQUEST).build();
 		}
 		return Response.ok().entity(new StandardResponseDTO(true, "Ingrediente "+ingredienteDto.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();
 	}

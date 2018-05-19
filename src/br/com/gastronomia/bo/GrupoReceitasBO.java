@@ -26,10 +26,13 @@ public class GrupoReceitasBO {
 
 	public boolean createGroup(GrupoReceitas grupo) throws ValidationException, NoSuchAlgorithmException {
 		if (grupo != null) {
-			grupoReceitasDAO.save(grupo);
-			return true;
+			try {
+				grupoReceitasDAO.save(grupo);
+				return true;
+			} catch (Exception e) {
+				throw new ValidationException("Grupo já existente.");
+			}
 		}
-
 		throw new ValidationException("invalido");
 
 	}
