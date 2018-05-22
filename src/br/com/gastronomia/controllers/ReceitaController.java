@@ -64,7 +64,7 @@ public class ReceitaController {
             System.out.println(receita);
             receitaBO.createReceita(receita);
         } catch (Exception e) {
-            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+            return Response.ok(e.getMessage()).status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok().entity(new StandardResponseDTO(true, "Receita "+receita.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();
     }

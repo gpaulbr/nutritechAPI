@@ -46,6 +46,9 @@ public class Receita implements Serializable {
     @Column(name = "Nome")
     private String nome;
 
+    @Column(name = "nota")
+    private float nota;
+
     @Column(name= "Publicada", nullable = false)
     private boolean publicada;
 
@@ -101,7 +104,7 @@ public class Receita implements Serializable {
     private Date datahora;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "GrupoReceita", nullable = false)
+    @JoinColumn(name = "GrupoReceita", nullable = false, foreignKey=@ForeignKey(name = "FK_RECEITA_GRUPORECEITA"))
     private GrupoReceitas grupoReceita;
 
     public Receita() {
@@ -221,6 +224,22 @@ public class Receita implements Serializable {
 
     public void setDatahora(Date datahora) {
         this.datahora = datahora;
+    }
+
+    public float getNota() {
+        return nota;
+    }
+
+    public void setNota(float nota) {
+        this.nota = nota;
+    }
+
+    public boolean isPublicada() {
+        return publicada;
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 
     @Override

@@ -3,6 +3,7 @@ package br.com.gastronomia.bo;
 import br.com.gastronomia.dao.ReceitaDAO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Receita;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -36,10 +37,24 @@ public class ReceitaBO {
     public boolean createReceita(Receita receita) throws ValidationException, NoSuchAlgorithmException {
         if (receita != null) {
             System.out.println(receita);
-            receitaDAO.save(receita);
+            try {
+                receitaDAO.save(receita);
+            } catch (ConstraintViolationException e) {
+                switch (e.getConstraintName()) {
+                    case "FK_RECEITA_GRUPORECEITA":
+                        throw new ValidationException("Ficha Técnica de Preparo deve ter um grupo de receita.");
+                    case "FK_RECEITA_IMAGEM":
+                        throw new ValidationException("Ficha Técnica de Preparo deve ter uma imagem.");
+                    case "FK_RECEITA_PROFESSOR":
+                        throw new ValidationException("Ficha Técnica de Preparo deve ter um professor.");
+                }
+            }
+            catch (Exception e) {
+                throw new ValidationException(e.getMessage());
+            }
             return true;
         }
-        throw new ValidationException("invalido");
+        throw new ValidationException("Houve um problema com o cadastro de receita. Verifique todos os campos.");
 
     }
 
