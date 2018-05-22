@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.awt.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -65,8 +66,9 @@ public class Receita implements Serializable {
     @Column(name = "Peso", nullable = false)
     private double peso;
 
-    @Column(name = "Imagem", nullable = false)
-    private String imagem;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Imagem", nullable = false, foreignKey=@ForeignKey(name = "FK_RECEITA_IMAGEM"))
+    private Imagem imagem;
 
     @Column(name = "Dificuldade", nullable = true)
     @Max(5)
@@ -197,11 +199,11 @@ public class Receita implements Serializable {
         this.grupoReceita = grupoReceita;
     }
 
-    public String getImagem() {
+    public Imagem getImagem() {
         return imagem;
     }
 
-    public void setImagem(String imagem) {
+    public void setImagem(Imagem imagem) {
         this.imagem = imagem;
     }
 

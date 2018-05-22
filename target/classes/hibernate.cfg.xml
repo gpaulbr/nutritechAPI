@@ -18,5 +18,9 @@
         <mapping class="br.com.gastronomia.model.IngredienteAtributoId" />
 		<mapping class="br.com.gastronomia.model.ReceitaIngrediente" />
 		<mapping class="br.com.gastronomia.model.ReceitaIngredienteId" />
+		<mapping class="br.com.gastronomia.model.Imagem" />
+		<mapping class="br.com.gastronomia.model.ReceitaImagem" />
+		<mapping class="br.com.gastronomia.model.ReceitaImagemId" />
+
 	</session-factory>
 </hibernate-configuration>
