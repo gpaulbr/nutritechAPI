@@ -7,7 +7,7 @@ package br.com.gastronomia.util;
  */
 public class Constantes {
 //br.ages.crud.util.config_bd ambiente
-	public static final String AMBIENTE_PROPERTIES = "ambiente";
+	public static final String AMBIENTE_PROPERTIES = "config"; //ambiente
 	public static final String CONEXAO_BD_DRIVE = "conexao.driver.mysql";
 	public static final String CONEXAO_BD_URL = "conexao.url";
 	public static final String CONEXAO_BD_USER = "conexao.user";
@@ -23,6 +23,9 @@ public class Constantes {
 	public static final String ADMINISTRATOR_ROLE = "administrator";
 	public static final String PROFESSOR_ROLE = "professor";
 	public static final String USER_ROLE = "usurario";
-	
+
+	//Imagens
+	public static final String PATH_IMAGE = "path.image";
+
 	
 }
