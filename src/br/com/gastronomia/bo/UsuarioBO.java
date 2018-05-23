@@ -19,6 +19,7 @@ import br.com.gastronomia.util.SendMail;
 import org.hibernate.exception.ConstraintViolationException;
 
 public class UsuarioBO {
+	
 	private UsuarioDAO usuarioDAO;
 
 	public UsuarioBO() {
