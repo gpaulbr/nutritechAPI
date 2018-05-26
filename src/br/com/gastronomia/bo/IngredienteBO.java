@@ -43,16 +43,9 @@ public class IngredienteBO {
 
 	}
 
-	public boolean createIngrediente(IngredienteCadastroDTO ingredienteDto) throws ValidationException, NoSuchAlgorithmException {
-		if (ingredienteDto != null) {
+	public boolean createIngrediente(Ingrediente ingrediente) throws ValidationException, NoSuchAlgorithmException {
+		if (ingrediente != null) {
 			try {
-				Usuario usuario = usuarioDAO.findUserByID(ingredienteDto.getIdCriador());
-				Ingrediente ingrediente = new Ingrediente();
-				ingrediente.setIngredienteInfoCadastro(ingredienteDto, usuario);
-
-				for (IngredienteAtributoDto ingAtr: ingredienteDto.getAtributos()) {
-					ingrediente.addIngredienteAtributo(atributoDAO.findAtributoByID(ingAtr.getIdAtributo()), ingAtr.getValor());
-				}
 				ingredienteDAO.save(ingrediente);
 				return true;
 			} catch (ValidationException | NullPointerException e) {
