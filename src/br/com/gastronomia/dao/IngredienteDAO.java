@@ -7,6 +7,7 @@ import br.com.gastronomia.model.Ingrediente;
 import org.hibernate.Session;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class IngredienteDAO extends GenericHibernateDAO<Ingrediente> {
 	public List<Ingrediente> listForName(Object Ingrediente, String q) {
@@ -16,7 +17,10 @@ public class IngredienteDAO extends GenericHibernateDAO<Ingrediente> {
 	}
 
 	public List<Ingrediente> listAllIngredientes(){
-		List<Ingrediente> ingredientes = listAll(Ingrediente.class);
+		List<Ingrediente> ingredientes = listAll(Ingrediente.class)
+				.stream()
+				.filter(ingrediente -> { return ingrediente.getStatus(); })
+				.collect(Collectors.toList());
 		return ingredientes;
 	}
 
