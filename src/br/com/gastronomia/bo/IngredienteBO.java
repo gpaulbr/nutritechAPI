@@ -2,6 +2,7 @@ package br.com.gastronomia.bo;
 
 import br.com.gastronomia.dao.AtributoDAO;
 import br.com.gastronomia.dao.IngredienteDAO;
+import br.com.gastronomia.dao.ReceitaDAO;
 import br.com.gastronomia.dao.UsuarioDAO;
 import br.com.gastronomia.dto.IngredienteAtributoDto;
 import br.com.gastronomia.dto.IngredienteCadastroDTO;
@@ -19,15 +20,22 @@ public class IngredienteBO {
 	private IngredienteDAO ingredienteDAO;
 	private UsuarioDAO usuarioDAO;
 	private AtributoDAO atributoDAO;
+	private ReceitaDAO receitaDAO;
 
 	public IngredienteBO() {
 		ingredienteDAO = new IngredienteDAO();
 		usuarioDAO = new UsuarioDAO();
 		atributoDAO = new AtributoDAO();
+		receitaDAO = new ReceitaDAO();
 	}
 
 
 	public long inactiveIngrediente(long id) throws ValidationException  {
+		if (id > 0){
+			List<Ingrediente> ingredientes = ingredienteDAO.findReceitaIngredienteByIdIngrediente(id);
+			if (ingredientes.size() > 0)
+				throw new ValidationException("Ingrediente não pode ser excluído");
+		}
 		return ingredienteDAO.alterStatus(id, false);
 	}
 

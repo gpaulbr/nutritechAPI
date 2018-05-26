@@ -64,7 +64,7 @@ public class IngredienteController {
 
 		} catch (Exception e) {
 
-			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+			return Response.ok(e.getMessage()).status(Response.Status.BAD_REQUEST).build();
 		}
 		return Response.ok().entity(new StandardResponseDTO(true, "Ingrediente desativado com sucesso!")).status(Response.Status.ACCEPTED).build();
 

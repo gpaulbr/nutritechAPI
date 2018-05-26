@@ -4,6 +4,7 @@ import br.com.gastronomia.db.GenericHibernateDAO;
 import br.com.gastronomia.db.HibernateUtil;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Ingrediente;
+import br.com.gastronomia.model.ReceitaIngrediente;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -32,6 +33,10 @@ public class IngredienteDAO extends GenericHibernateDAO<Ingrediente> {
 		return (Ingrediente) findSingleObject("id", Ingrediente.class, id);
 	}
 
+	public List<Ingrediente> findReceitaIngredienteByIdIngrediente(Long id) {
+		return findMultipleObjects("ingrediente", ReceitaIngrediente.class, id);
+	}
+
 	public long updateIngrediente(Ingrediente ingrediente) throws ValidationException {
 		return merge(ingrediente);
 	}
@@ -41,4 +46,6 @@ public class IngredienteDAO extends GenericHibernateDAO<Ingrediente> {
 		ingrediente.setStatus(statusBool);
 		return merge(ingrediente);
 	}
+
+
 }
