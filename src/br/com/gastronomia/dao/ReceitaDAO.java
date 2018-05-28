@@ -9,12 +9,17 @@ import org.hibernate.Session;
 
 import javax.persistence.Query;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReceitaDAO extends GenericHibernateDAO<Receita> {
 
     public List<Receita> listAllReceitas(){
-        List<Receita> Receitas = listAll(Receita.class);
-        return Receitas;
+        List<Receita> receitas = listAll(Receita.class)
+                .stream()
+                .filter(receita -> { return receita.getStatus(); })
+                .collect(Collectors.toList());
+
+        return receitas;
     }
 
     public Receita findReceitaByName(String nome) {
