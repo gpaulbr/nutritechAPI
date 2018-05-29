@@ -60,6 +60,7 @@ public class GrupoReceitasBO {
 
 	public long updateGroup(GrupoReceitas grupoReceitas) throws ValidationException {
 		if (grupoReceitas != null) {
+			grupoReceitas.setStatus(true);
 			return grupoReceitasDAO.updateGroup(grupoReceitas);
 		}
 		throw new ValidationException("invalido");
@@ -74,6 +75,14 @@ public class GrupoReceitasBO {
 		ArrayList<GrupoReceitas> grupoReceitas = null;
 		HashMap<String, List<GrupoReceitas>> listGrupoReceitas = new HashMap<String, List<GrupoReceitas>>();
 		grupoReceitas = (ArrayList<GrupoReceitas>) grupoReceitasDAO.listAll(GrupoReceitas.class);
+		listGrupoReceitas.put("Grupos", grupoReceitas);
+		return listGrupoReceitas;
+	}
+
+	public HashMap<String, List<GrupoReceitas>> listGroupsActived() {
+
+		HashMap<String, List<GrupoReceitas>> listGrupoReceitas = new HashMap<String, List<GrupoReceitas>>();
+		List<GrupoReceitas> grupoReceitas = grupoReceitasDAO.findMultipleObjects("status",GrupoReceitas.class,true);
 		listGrupoReceitas.put("Grupos", grupoReceitas);
 		return listGrupoReceitas;
 	}

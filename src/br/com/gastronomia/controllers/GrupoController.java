@@ -46,6 +46,19 @@ public class GrupoController {
 			return Response.ok().status(Response.Status.BAD_REQUEST).build();
 		}
 
+	}@GET
+	@Path("/ativos")
+	@Produces("application/json; charset=UTF-8")
+	//@JWTTokenNeeded
+	public Response listActived() throws PersistenciaException, SQLException {
+		try {
+			return Response.ok().entity(grupoReceitasBO.listGroupsActived()).status(Response.Status.ACCEPTED).build();
+
+
+		} catch (Exception e) {
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+		}
+
 	}
 
 	@POST

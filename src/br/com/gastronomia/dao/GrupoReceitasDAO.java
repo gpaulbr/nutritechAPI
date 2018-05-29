@@ -17,6 +17,7 @@ public class GrupoReceitasDAO extends GenericHibernateDAO<GrupoReceitas> {
 		return grupos;
 	}
 
+
 	public GrupoReceitas findGroupByCod(long codGrupos) {
 		return (GrupoReceitas) findSingleObject("IdGrupo", GrupoReceitas.class, String.valueOf(codGrupos));
 	}
