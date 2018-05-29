@@ -2,19 +2,13 @@ package br.com.gastronomia.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.awt.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.List;
 import java.util.Date;
 
 /**
@@ -46,8 +40,9 @@ public class Receita implements Serializable {
     @Column(name = "Nome")
     private String nome;
 
-    @Column(name = "nota")
-    private float nota;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Nota", nullable = true, foreignKey=@ForeignKey(name = "FK_RECEITA_NOTA"))
+    private Nota nota;
 
     @Column(name= "Publicada", nullable = false)
     private boolean publicada;
@@ -226,11 +221,11 @@ public class Receita implements Serializable {
         this.datahora = datahora;
     }
 
-    public float getNota() {
+    public Nota getNota() {
         return nota;
     }
 
-    public void setNota(float nota) {
+    public void setNota(Nota nota) {
         this.nota = nota;
     }
 

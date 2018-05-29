@@ -162,7 +162,6 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 			session.merge(T);
 			tx.commit();
 			id = 1;
-
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
