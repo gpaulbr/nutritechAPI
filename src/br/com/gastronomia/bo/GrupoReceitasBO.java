@@ -44,10 +44,8 @@ public class GrupoReceitasBO {
 		ReceitaDAO receitaDAO = new ReceitaDAO();
 		List<Receita> receitas = receitaDAO.listAllReceitas();
 
-		GrupoReceitas grupoReceitas = grupoReceitasDAO.findGroupByID(id);
-
 		for (Receita receita : receitas) {
-			if(receita.getGrupoReceita() == grupoReceitas) {
+			if(receita.getGrupoReceita().getId() == id) {
 				throw new ValidationException("Grupo vínculado à uma receita.");
 			}
 		}

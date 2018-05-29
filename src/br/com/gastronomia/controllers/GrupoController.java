@@ -71,16 +71,16 @@ public class GrupoController {
 	@Path("/{id}")
 	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
-	public Response remove(@PathParam("id") Long id) throws PersistenciaException, ValidationException {
+	public Response remove(@PathParam("id") Long id) throws PersistenciaException {
 
 		try {
 			grupoReceitasBO.deactivateGroup(id);
 
-		} catch (Exception e) {
+		} catch (ValidationException e) {
 
-			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+			return Response.ok().entity(new StandardResponseDTO(true, e.getMessage())).status(Response.Status.BAD_REQUEST).build();
 		}
-		return Response.ok().entity(new StandardResponseDTO(true, "Grupo de Receita desativado com sucesso!")).status(Response.Status.ACCEPTED).build();
+		return Response.ok().entity(new StandardResponseDTO(true, "Grupo de Receita excluído com sucesso!")).status(Response.Status.ACCEPTED).build();
 
 	}
 	@GET
