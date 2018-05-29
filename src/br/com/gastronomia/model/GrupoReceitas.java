@@ -54,6 +54,8 @@ public class GrupoReceitas implements Serializable {
 	 * 
 	 **/
 	public GrupoReceitas() {
+
+		//this.status = true;
 	}
 
 	/**
