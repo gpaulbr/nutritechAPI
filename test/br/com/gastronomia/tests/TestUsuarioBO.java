@@ -1,10 +1,14 @@
 package br.com.gastronomia.tests;
 
+import static br.com.gastronomia.util.TipoDeUsuario.ADMIN;
+import static br.com.gastronomia.util.TipoDeUsuario.PROFESSOR;
+import static br.com.gastronomia.util.TipoDeUsuario.USUARIO;
 import static org.junit.Assert.assertEquals;
 
 import br.com.gastronomia.bo.UsuarioBO;
 import br.com.gastronomia.model.Ingrediente;
 import br.com.gastronomia.model.Usuario;
+import br.com.gastronomia.util.TipoDeUsuario;
 import org.junit.Test;
 
 import br.com.gastronomia.util.Validator;
@@ -42,4 +46,64 @@ public class TestUsuarioBO {
 
 		assertEquals(false, Util.isCPF("1111111111"));
 	}
+
+	// Testes da Classe Usuario - model
+
+	@Test
+	public void testUsuarioNome(){
+	Usuario aluno = new Usuario();
+	aluno.setNome("Testando Usuario");
+		{assertEquals("Testando Usuario", aluno.getNome());}
+	}
+
+	@Test
+	public void testUsuarioCpf(){
+		Usuario aluno = new Usuario();
+		aluno.setCpf("0987654321");
+		{assertEquals("0987654321", aluno.getCpf());}
+	}
+
+	@Test
+	public void testUsuarioSenha(){
+		Usuario aluno = new Usuario();
+		aluno.setSenha("teste123");
+		{assertEquals("teste123", aluno.getSenha());}
+	}
+
+	@Test
+	public void testUsuarioStatus(){
+		Usuario aluno = new Usuario();
+		aluno.setStatus(true);
+		{assertEquals(true, aluno.isStatus());}
+	}
+
+	@Test
+	public void testUsuarioEmail(){
+		Usuario aluno = new Usuario();
+		aluno.setEmail("aluno@ufcspa.com.br");
+		{assertEquals("aluno@ufcspa.com.br", aluno.getEmail());}
+	}
+
+	@Test
+	public void testUsuarioTipoADMIN(){
+		Usuario aluno = new Usuario();
+		aluno.setTipo(ADMIN);
+		{assertEquals(ADMIN, aluno.getTipo());}
+	}
+	@Test
+	public void testUsuarioTipoPROFESSOR(){
+		Usuario aluno = new Usuario();
+		aluno.setTipo(PROFESSOR);
+		{assertEquals(PROFESSOR, aluno.getTipo());}
+	}
+
+	@Test
+	public void testUsuarioTipoUSUARIO(){
+		Usuario aluno = new Usuario();
+		aluno.setTipo(USUARIO);
+		{assertEquals(USUARIO, aluno.getTipo());}
+	}
+
+
 }
+
