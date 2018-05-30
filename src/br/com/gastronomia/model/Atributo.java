@@ -123,4 +123,5 @@ public class Atributo implements Serializable {
 				+ " multiplicador: " + multiplicador + " obrigatório:"
 				+ obrigatorio + " status:" + status;
 	}
+
 }
