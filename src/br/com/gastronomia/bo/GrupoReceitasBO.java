@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.gastronomia.dao.GrupoReceitasDAO;
+import br.com.gastronomia.dao.ReceitaDAO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.GrupoReceitas;
+import br.com.gastronomia.model.Receita;
 import br.com.gastronomia.util.Constantes;
 import br.com.gastronomia.util.EncryptUtil;
 import br.com.gastronomia.util.MensagemContantes;
@@ -27,6 +29,7 @@ public class GrupoReceitasBO {
 	public boolean createGroup(GrupoReceitas grupo) throws ValidationException, NoSuchAlgorithmException {
 		if (grupo != null) {
 			try {
+				grupo.setStatus(true);
 				grupoReceitasDAO.save(grupo);
 				return true;
 			} catch (Exception e) {
@@ -38,6 +41,16 @@ public class GrupoReceitasBO {
 	}
 
 	public long deactivateGroup(long id) throws ValidationException  {
+
+		ReceitaDAO receitaDAO = new ReceitaDAO();
+		List<Receita> receitas = receitaDAO.listAllReceitas();
+
+		for (Receita receita : receitas) {
+			if(receita.getGrupoReceita().getId() == id) {
+				throw new ValidationException("Grupo vínculado à uma receita.");
+			}
+		}
+
 		return grupoReceitasDAO.alterStatus(id, false);
 	}
 
