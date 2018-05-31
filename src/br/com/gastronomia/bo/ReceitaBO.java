@@ -84,6 +84,14 @@ public class ReceitaBO {
         return listReceitas;
     }
 
+    public HashMap<String, List<Receita>> listReceitasAtivas() {
+        ArrayList<Receita> receitas = null;
+        HashMap<String, List<Receita>> listReceitas = new HashMap<String, List<Receita>>();
+        receitas = (ArrayList<Receita>) receitaDAO.listReceitasAtivas();
+        listReceitas.put("Receitas", receitas);
+        return listReceitas;
+    }
+
     public Receita getReceitaById(Long id) throws ValidationException {
         if (id > 0) {
             return receitaDAO.findReceitaById(id);

@@ -38,6 +38,19 @@ public class ReceitaController {
     }
 
     @GET
+    @Path("/ativas")
+    @Produces("application/json; charset=UTF-8")
+    //@JWTTokenNeeded
+    public Response listAtivas() throws PersistenciaException, SQLException {
+        try {
+            return Response.ok().entity(receitaBO.listReceitasAtivas()).status(Response.Status.ACCEPTED).build();
+
+        } catch (Exception e) {
+            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
     @Path("/now")
     @Produces("application/json; charset=UTF-8")
     //@JWTTokenNeeded

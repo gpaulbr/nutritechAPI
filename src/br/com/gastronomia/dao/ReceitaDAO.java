@@ -16,6 +16,15 @@ public class ReceitaDAO extends GenericHibernateDAO<Receita> {
     public List<Receita> listAllReceitas(){
         List<Receita> receitas = listAll(Receita.class)
                 .stream()
+                //.filter(receita -> { return receita.getStatus(); })
+                .collect(Collectors.toList());
+
+        return receitas;
+    }
+
+    public List<Receita> listReceitasAtivas(){
+        List<Receita> receitas = listAll(Receita.class)
+                .stream()
                 .filter(receita -> { return receita.getStatus(); })
                 .collect(Collectors.toList());
 
