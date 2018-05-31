@@ -44,14 +44,13 @@ public class IngredienteController {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
-	public Response create(IngredienteCadastroDTO ingredienteDto) throws PersistenciaException, ValidationException {
+	public Response create(Ingrediente ingrediente) throws PersistenciaException, ValidationException {
 		try {
-			System.out.println(ingredienteDto);
-			ingredienteBO.createIngrediente(ingredienteDto);
+			ingredienteBO.createIngrediente(ingrediente);
 		} catch (Exception e) {
 			return Response.ok().entity(new StandardResponseDTO(true, e.getMessage())).status(Response.Status.BAD_REQUEST).build();
 		}
-		return Response.ok().entity(new StandardResponseDTO(true, "Ingrediente "+ingredienteDto.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();
+		return Response.ok().entity(new StandardResponseDTO(true, "Ingrediente "+ingrediente.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();
 	}
 
 	@DELETE
@@ -65,7 +64,7 @@ public class IngredienteController {
 
 		} catch (Exception e) {
 
-			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+			return Response.ok(e.getMessage()).status(Response.Status.BAD_REQUEST).build();
 		}
 		return Response.ok().entity(new StandardResponseDTO(true, "Ingrediente desativado com sucesso!")).status(Response.Status.ACCEPTED).build();
 
