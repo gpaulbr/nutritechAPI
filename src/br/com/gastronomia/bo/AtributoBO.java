@@ -44,7 +44,6 @@ public class 	AtributoBO {
 	}
 
 	public long inactiveAtributo(long id) throws ValidationException {
-
 		ReceitaDAO receitaDAO = new ReceitaDAO();
 		List<Receita> receitas = receitaDAO.listAllReceitas();
 
@@ -67,6 +66,7 @@ public class 	AtributoBO {
 
 	public long updateAtributo(Atributo atributo) throws ValidationException {
 		if (atributo != null) {
+			atributo.setStatus(true);
 			return atributoDAO.updateAtributo(atributo);
 		}
 		throw new ValidationException("invalido");
@@ -82,6 +82,16 @@ public class 	AtributoBO {
 		ArrayList<Atributo> atributos = null;
 		HashMap<String, List<Atributo>> listAtributos = new HashMap<String, List<Atributo>>();
 		atributos = (ArrayList<Atributo>) atributoDAO.listAllOrder(Atributo.class, "Ordem");
+		listAtributos.put("Atributos", atributos);
+		return listAtributos;
+	}
+
+	public HashMap<String, List<Atributo>> listActivesAtributos() {
+		ArrayList<Atributo> atributos = null;
+		HashMap<String, List<Atributo>> listAtributos = new HashMap<String, List<Atributo>>();
+		atributos = (ArrayList<Atributo>) atributoDAO.findMultipleObjects("status",Atributo.class,	true);
+
+
 		listAtributos.put("Atributos", atributos);
 		return listAtributos;
 	}

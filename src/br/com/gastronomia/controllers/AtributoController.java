@@ -48,6 +48,21 @@ public class AtributoController {
 
 	}
 
+	@GET
+	@Path("/ativos")
+	@Produces("application/json; charset=UTF-8")
+	//@JWTTokenNeeded
+	public Response listActives() throws PersistenciaException, SQLException {
+		try {
+			return Response.ok().entity(atributoBO.listActivesAtributos()).status(Response.Status.ACCEPTED).build();
+
+
+		} catch (Exception e) {
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+		}
+
+	}
+
 	@POST
 	@Path("/")
 	@Consumes("application/json; charset=UTF-8")
@@ -69,7 +84,6 @@ public class AtributoController {
 	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
 	public Response remove(@PathParam("id") Long id) throws PersistenciaException {
-
 		try {
 			atributoBO.inactiveAtributo(id);
 
