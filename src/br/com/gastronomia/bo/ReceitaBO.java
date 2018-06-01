@@ -31,16 +31,7 @@ public class ReceitaBO {
             try {
                 return receitaDAO.updateReceita(receita);
             } catch (ConstraintViolationException e) {
-                switch (e.getConstraintName()) {
-                    case "FK_RECEITA_GRUPORECEITA":
-                        throw new ValidationException("Ficha Técnica de Preparo deve ter um grupo de receita.");
-                    case "FK_RECEITA_IMAGEM":
-                        throw new ValidationException("Ficha Técnica de Preparo deve ter uma imagem.");
-                    case "FK_NOTA_AVALIADOR":
-                        throw new ValidationException("Ficha Técnica de Preparo, houve um erro ao atribuir um avaliador à nota. Este avaliador existe?");
-                    case "FK_RECEITA_PROFESSOR":
-                        throw new ValidationException("Ficha Técnica de Preparo deve ter um professor.");
-                }
+                throw new ValidationException(getExceptionMessage(e));
             }
             catch (Exception e) {
                 throw new ValidationException(e.getMessage());
@@ -56,16 +47,7 @@ public class ReceitaBO {
             try {
                 receitaDAO.save(receita);
             } catch (ConstraintViolationException e) {
-                switch (e.getConstraintName()) {
-                    case "FK_RECEITA_GRUPORECEITA":
-                        throw new ValidationException("Ficha Técnica de Preparo deve ter um grupo de receita.");
-                    case "FK_RECEITA_IMAGEM":
-                        throw new ValidationException("Ficha Técnica de Preparo deve ter uma imagem.");
-                    case "FK_NOTA_AVALIADOR":
-                        throw new ValidationException("Ficha Técnica de Preparo, houve um erro ao atribuir um avaliador à nota. Este avaliador existe?");
-                    case "FK_RECEITA_PROFESSOR":
-                        throw new ValidationException("Ficha Técnica de Preparo deve ter um professor.");
-                }
+               throw new ValidationException(getExceptionMessage(e));
             }
             catch (Exception e) {
                 throw new ValidationException(e.getMessage());
@@ -74,6 +56,21 @@ public class ReceitaBO {
         }
         throw new ValidationException("Houve um problema com o cadastro de receita. Verifique todos os campos.");
 
+    }
+
+    public String getExceptionMessage(ConstraintViolationException e) {
+        switch (e.getConstraintName()) {
+            case "FK_RECEITA_GRUPORECEITA":
+                return ("Ficha Técnica de Preparo deve ter um grupo de receita.");
+            case "FK_RECEITA_IMAGEM":
+                return ("Ficha Técnica de Preparo deve ter uma imagem.");
+            case "FK_NOTA_AVALIADOR":
+                return ("Ficha Técnica de Preparo, houve um erro ao atribuir um avaliador à nota. Este avaliador existe?");
+            case "FK_RECEITA_PROFESSOR":
+                return ("Ficha Técnica de Preparo deve ter um professor.");
+            default:
+                return ("Preencha todos os campos obrigatórios antes de prosseguir.");
+        }
     }
 
     public HashMap<String, List<Receita>> listReceita() {
