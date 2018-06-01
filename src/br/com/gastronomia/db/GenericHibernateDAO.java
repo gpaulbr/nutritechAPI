@@ -76,6 +76,7 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 		return objects;
 	}
 
+
     public List<T> listAllOrder(Class<?> T, String field) {
         Session session = HibernateUtil.getFactory();
         String queryAll = "Select t from " + T.getSimpleName() + " t ORDER BY "+field+" ASC ";
@@ -145,12 +146,16 @@ public class GenericHibernateDAO<T> implements GenericDAO<T> {
 
 	public List<T> findMultipleObjects(String parameter, Class<?> T, Object valueParameter) {
 		Session session = HibernateUtil.getFactory();
-
+		List <T> results;
 		String hql = "Select T FROM " + T.getSimpleName() + " T where T." + parameter + " = ?" ;
-		List<T> results =  session.createQuery(hql).setString(0, valueParameter.toString()).list(); //Deprecated
+		if(valueParameter instanceof Boolean)
+			results =  session.createQuery(hql).setBoolean(0, (Boolean) valueParameter).list(); //Deprecated
+		else
+			results =  session.createQuery(hql).setString(0, valueParameter.toString()).list(); //Deprecated
 		session.close();
 		return  results;
 	}
+
 
 	@Override
 	public long merge(Object T) throws ValidationException {
