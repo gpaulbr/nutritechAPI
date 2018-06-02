@@ -21,6 +21,6 @@
 		<mapping class="br.com.gastronomia.model.Imagem" />
 		<mapping class="br.com.gastronomia.model.ReceitaImagem" />
 		<mapping class="br.com.gastronomia.model.ReceitaImagemId" />
-
+		<mapping class="br.com.gastronomia.model.Nota" />
 	</session-factory>
 </hibernate-configuration>

@@ -3,6 +3,7 @@ package br.com.gastronomia.bo;
 import br.com.gastronomia.dao.ReceitaDAO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Receita;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -27,7 +28,14 @@ public class ReceitaBO {
 
     public long updateReceita(Receita receita) throws ValidationException {
         if (receita != null) {
-            return receitaDAO.updateReceita(receita);
+            try {
+                return receitaDAO.updateReceita(receita);
+            } catch (ConstraintViolationException e) {
+                throw new ValidationException(getExceptionMessage(e));
+            }
+            catch (Exception e) {
+                throw new ValidationException(e.getMessage());
+            }
         }
         throw new ValidationException("invalido");
 
@@ -36,17 +44,47 @@ public class ReceitaBO {
     public boolean createReceita(Receita receita) throws ValidationException, NoSuchAlgorithmException {
         if (receita != null) {
             System.out.println(receita);
-            receitaDAO.save(receita);
+            try {
+                receitaDAO.save(receita);
+            } catch (ConstraintViolationException e) {
+               throw new ValidationException(getExceptionMessage(e));
+            }
+            catch (Exception e) {
+                throw new ValidationException(e.getMessage());
+            }
             return true;
         }
-        throw new ValidationException("invalido");
+        throw new ValidationException("Houve um problema com o cadastro de receita. Verifique todos os campos.");
 
+    }
+
+    public String getExceptionMessage(ConstraintViolationException e) {
+        switch (e.getConstraintName()) {
+            case "FK_RECEITA_GRUPORECEITA":
+                return ("Ficha Técnica de Preparo deve ter um grupo de receita.");
+            case "FK_RECEITA_IMAGEM":
+                return ("Ficha Técnica de Preparo deve ter uma imagem.");
+            case "FK_NOTA_AVALIADOR":
+                return ("Ficha Técnica de Preparo, houve um erro ao atribuir um avaliador à nota. Este avaliador existe?");
+            case "FK_RECEITA_PROFESSOR":
+                return ("Ficha Técnica de Preparo deve ter um professor.");
+            default:
+                return ("Preencha todos os campos obrigatórios antes de prosseguir.");
+        }
     }
 
     public HashMap<String, List<Receita>> listReceita() {
         ArrayList<Receita> receitas = null;
         HashMap<String, List<Receita>> listReceitas = new HashMap<String, List<Receita>>();
         receitas = (ArrayList<Receita>) receitaDAO.listAllReceitas();
+        listReceitas.put("Receitas", receitas);
+        return listReceitas;
+    }
+
+    public HashMap<String, List<Receita>> listReceitasAtivas() {
+        ArrayList<Receita> receitas = null;
+        HashMap<String, List<Receita>> listReceitas = new HashMap<String, List<Receita>>();
+        receitas = (ArrayList<Receita>) receitaDAO.listReceitasAtivas();
         listReceitas.put("Receitas", receitas);
         return listReceitas;
     }
