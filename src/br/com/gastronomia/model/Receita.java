@@ -2,19 +2,13 @@ package br.com.gastronomia.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.awt.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.List;
 import java.util.Date;
 
 /**
@@ -45,6 +39,10 @@ public class Receita implements Serializable {
     @NotEmpty
     @Column(name = "Nome")
     private String nome;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Nota", nullable = true, foreignKey=@ForeignKey(name = "FK_RECEITA_NOTA"))
+    private Nota nota;
 
     @Column(name= "Publicada", nullable = false)
     private boolean publicada;
@@ -101,7 +99,7 @@ public class Receita implements Serializable {
     private Date datahora;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "GrupoReceita", nullable = false)
+    @JoinColumn(name = "GrupoReceita", nullable = false, foreignKey=@ForeignKey(name = "FK_RECEITA_GRUPORECEITA"))
     private GrupoReceitas grupoReceita;
 
     public Receita() {
@@ -221,6 +219,22 @@ public class Receita implements Serializable {
 
     public void setDatahora(Date datahora) {
         this.datahora = datahora;
+    }
+
+    public Nota getNota() {
+        return nota;
+    }
+
+    public void setNota(Nota nota) {
+        this.nota = nota;
+    }
+
+    public boolean isPublicada() {
+        return publicada;
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 
     @Override

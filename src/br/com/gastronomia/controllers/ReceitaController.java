@@ -5,7 +5,6 @@ import br.com.gastronomia.dto.StandardResponseDTO;
 import br.com.gastronomia.exception.PersistenciaException;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Receita;
-import br.com.gastronomia.model.ReceitaIngrediente;
 import br.com.gastronomia.util.EncryptUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +38,19 @@ public class ReceitaController {
     }
 
     @GET
+    @Path("/ativas")
+    @Produces("application/json; charset=UTF-8")
+    //@JWTTokenNeeded
+    public Response listAtivas() throws PersistenciaException, SQLException {
+        try {
+            return Response.ok().entity(receitaBO.listReceitasAtivas()).status(Response.Status.ACCEPTED).build();
+
+        } catch (Exception e) {
+            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
     @Path("/now")
     @Produces("application/json; charset=UTF-8")
     //@JWTTokenNeeded
@@ -64,7 +76,8 @@ public class ReceitaController {
             System.out.println(receita);
             receitaBO.createReceita(receita);
         } catch (Exception e) {
-            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+            e.printStackTrace();
+            return Response.ok().entity(new StandardResponseDTO(false, e.getMessage())).status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok().entity(new StandardResponseDTO(true, "Receita "+receita.getNome()+", criado com sucesso!")).status(Response.Status.ACCEPTED).build();
     }
@@ -104,10 +117,11 @@ public class ReceitaController {
     //@JWTTokenNeeded
     public Response update(Receita receita) throws PersistenciaException, ValidationException {
         try {
+            System.out.println(receita);
             receitaBO.updateReceita(receita);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.ok().status(Response.Status.BAD_REQUEST).build();
+            return Response.ok().entity(new StandardResponseDTO(false, e.getMessage())).status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok().entity(new StandardResponseDTO(true, "Receita "+receita.getNome()+ " editado com sucesso!")).status(Response.Status.ACCEPTED).build();
 
