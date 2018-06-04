@@ -34,7 +34,7 @@ public class IngredienteBO {
 		if (id > 0){
 			List<Ingrediente> ingredientes = ingredienteDAO.findReceitaIngredienteByIdIngrediente(id);
 			if (ingredientes.size() > 0)
-				throw new ValidationException("Ingrediente não pode ser excluído");
+				throw new ValidationException("Ingrediente não pode ser excluído, pois está vinculado a uma ou mais receitas.");
 		}
 		return ingredienteDAO.alterStatus(id, false);
 	}
