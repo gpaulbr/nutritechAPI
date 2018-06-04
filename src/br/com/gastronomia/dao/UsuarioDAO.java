@@ -1,6 +1,7 @@
 package br.com.gastronomia.dao;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Usuario;
@@ -25,7 +26,10 @@ public class UsuarioDAO extends GenericHibernateDAO<Usuario> {
 	}
 
 	public List<Usuario> listUsersByType(TipoDeUsuario tipo) {
-		return (List<Usuario>) findMultipleObjects("tipo", Usuario.class, tipo.name());
+		return (List<Usuario>) findMultipleObjects("tipo", Usuario.class, tipo.name())
+				.stream()
+				.filter(usuario -> { return usuario.isStatus(); })
+				.collect(Collectors.toList());
 	}
 
 
