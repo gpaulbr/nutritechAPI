@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import br.com.gastronomia.util.TipoDeUsuario;
 import org.hibernate.HibernateException;
 import br.com.gastronomia.dao.UsuarioDAO;
@@ -123,7 +125,10 @@ public class UsuarioBO {
 	public HashMap<String, List<Usuario>> listUser() {
 		ArrayList<Usuario> usuarios = null;
 		HashMap<String, List<Usuario>> listUsers = new HashMap<String, List<Usuario>>();
-		usuarios = (ArrayList<Usuario>) usuarioDAO.listAll(Usuario.class);
+		usuarios = (ArrayList<Usuario>) usuarioDAO.listAll(Usuario.class)
+											.stream()
+											.filter(usuario -> { return usuario.isStatus(); })
+											.collect(Collectors.toList());
 		listUsers.put("Usuarios", usuarios);
 		return listUsers;
 	}
@@ -168,7 +173,9 @@ public class UsuarioBO {
 	
 	public Usuario getUserById(long id) throws ValidationException {
 		if (id > 0) {
-			return usuarioDAO.findUserByID(id);
+			Usuario usuario = usuarioDAO.findUserByID(id);
+			usuario.setSenha("");
+			return usuario;
 		}
 		throw new ValidationException("invalido");
 
