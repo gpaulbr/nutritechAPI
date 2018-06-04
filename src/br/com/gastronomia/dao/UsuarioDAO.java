@@ -26,10 +26,7 @@ public class UsuarioDAO extends GenericHibernateDAO<Usuario> {
 	}
 
 	public List<Usuario> listUsersByType(TipoDeUsuario tipo) {
-		return (List<Usuario>) findMultipleObjects("tipo", Usuario.class, tipo.name())
-				.stream()
-				.filter(usuario -> { return usuario.isStatus(); })
-				.collect(Collectors.toList());
+		return (List<Usuario>) findMultipleObjects("tipo", Usuario.class, tipo.name());
 	}
 
 
