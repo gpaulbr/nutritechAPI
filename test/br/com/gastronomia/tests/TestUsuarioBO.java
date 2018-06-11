@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import br.com.gastronomia.bo.UsuarioBO;
 import br.com.gastronomia.model.Ingrediente;
 import br.com.gastronomia.model.Usuario;
+import br.com.gastronomia.util.SendMail;
 import br.com.gastronomia.util.TipoDeUsuario;
 import org.junit.Test;
 
@@ -104,6 +105,10 @@ public class TestUsuarioBO {
 		{assertEquals(USUARIO, aluno.getTipo());}
 	}
 
+//SendMail
+	@Test
+	public void testSendEmail(){
 
+	}
 }
 
