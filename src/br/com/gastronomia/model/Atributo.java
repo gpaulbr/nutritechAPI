@@ -52,6 +52,10 @@ public class Atributo implements Serializable {
 	@Column(name= "Status", nullable = false)
 	private boolean status;
 
+
+	@Column(name= "ValorDiario")
+	private int valorDiario;
+
 	/**
 	 * Construtor vazio.
 	 * 
@@ -89,9 +93,12 @@ public class Atributo implements Serializable {
     public long getMultiplicador() {
         return multiplicador;
     }
+
     public Long getOrdem() {
         return ordem;
     }
+
+    public int getValorDiario() { return valorDiario; }
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -107,6 +114,8 @@ public class Atributo implements Serializable {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+
+	public void setValorDiario(int valorDiario) {  this.valorDiario = valorDiario; }
 
 	/**
 	 * Valida se o usuario esta ativo ou nao.
