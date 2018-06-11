@@ -175,7 +175,6 @@ public class UsuarioBO {
 			return usuario;
 		}
 		throw new ValidationException("invalido");
-
 	}
 
 }
