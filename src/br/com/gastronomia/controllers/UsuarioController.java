@@ -132,6 +132,5 @@ public class UsuarioController {
 			return Response.ok().status(Response.Status.BAD_REQUEST).build();
 		}
 		return Response.ok().entity(new StandardResponseDTO(true, "Usuario "+usuario.getNome()+ " editado com sucesso!")).status(Response.Status.ACCEPTED).build();
-
 	}
 }

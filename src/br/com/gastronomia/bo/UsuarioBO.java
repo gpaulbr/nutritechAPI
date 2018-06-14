@@ -1,14 +1,11 @@
 package br.com.gastronomia.bo;
 
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import br.com.gastronomia.util.TipoDeUsuario;
-import org.hibernate.HibernateException;
 import br.com.gastronomia.dao.UsuarioDAO;
 import br.com.gastronomia.dto.UsuarioLoginDTO;
 import br.com.gastronomia.exception.UsuarioInativoException;
@@ -18,17 +15,7 @@ import br.com.gastronomia.util.EncryptUtil;
 import br.com.gastronomia.util.MensagemContantes;
 import br.com.gastronomia.util.Validator;
 import br.com.gastronomia.util.SendMail;
-import br.com.gastronomia.util.SimpleKeyGenerator;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import javax.validation.executable.ValidateOnExecution;
-
-import org.hibernate.exception.ConstraintViolationException;
-
-import javax.validation.executable.ValidateOnExecution;
 import org.hibernate.exception.ConstraintViolationException;
 
 public class UsuarioBO {
@@ -57,7 +44,7 @@ public class UsuarioBO {
 			SendMail sendMail = new SendMail();
 			String subject = "Confirmação de email";
 //			String body = "localhost:8080/auth/" + EncryptUtil.encrypt2(String.valueOf(usuario.getMatricula()));
-			String body = "Bem Vindo ao NUTRITECH. Acesse  o link http://www.homo.ages.pucrs.br/nutritech-front/#/ para começar";
+			String body = "Bem Vindo ao NUTRITECH. Acesse  o link http://www.homo.ages.pucrs.br/nutritech/ para começar";
 			sendMail.envio(usuario.getEmail(), usuario.getNome(), subject, body);
 
 			try {
@@ -78,6 +65,15 @@ public class UsuarioBO {
 			}
 		}
 		return true;
+	}
+
+	public void esqueceuSenha(String email, String nome, long id){
+		String hash = email + System.nanoTime();
+
+		SendMail sendMail = new SendMail();
+		String subject = "NUTRITECH - Redefinir senha";
+		String body = "Acesse  o link para redefinir sua senha: http://www.homo.ages.pucrs.br/nutritech/#/usuario/"+id;
+		sendMail.envio(email,"",  subject, body);
 	}
 
 	public long deactivateUser(long id) throws ValidationException {
