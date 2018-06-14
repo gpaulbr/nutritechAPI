@@ -133,4 +133,23 @@ public class UsuarioController {
 		}
 		return Response.ok().entity(new StandardResponseDTO(true, "Usuario "+usuario.getNome()+ " editado com sucesso!")).status(Response.Status.ACCEPTED).build();
 	}
+
+	@POST
+	@Path("/redefinir/{id}")
+	@Produces("application/json; charset=UTF-8")
+	//@JWTTokenNeeded
+	public Response redefinirSenha(@PathParam("id") Long id) throws PersistenciaException, ValidationException {
+
+		try {
+			Usuario myUser = usuarioBO.getUserById(id);
+			usuarioBO.esqueceuSenha(myUser.getEmail(),myUser.getNome(), id);
+			return Response.ok().status(Response.Status.ACCEPTED).build();
+
+		} catch (Exception e) {
+			return Response.ok().status(Response.Status.BAD_REQUEST).build();
+		}
+
+	}
+
+
 }
