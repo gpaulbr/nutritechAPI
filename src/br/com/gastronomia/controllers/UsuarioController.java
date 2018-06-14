@@ -135,14 +135,14 @@ public class UsuarioController {
 	}
 
 	@POST
-	@Path("/redefinir/{id}")
+	@Path("/redefinir/{email}")
 	@Produces("application/json; charset=UTF-8")
 	//@JWTTokenNeeded
-	public Response redefinirSenha(@PathParam("id") Long id) throws PersistenciaException, ValidationException {
+	public Response redefinirSenha(@PathParam("email") String email) throws PersistenciaException, ValidationException {
 
 		try {
-			Usuario myUser = usuarioBO.getUserById(id);
-			usuarioBO.esqueceuSenha(myUser.getEmail(),myUser.getNome(), id);
+			Usuario myUser = usuarioDAO.findUserByEmail(email);
+			usuarioBO.esqueceuSenha(myUser.getEmail(),myUser.getNome(), myUser.getId());
 			return Response.ok().status(Response.Status.ACCEPTED).build();
 
 		} catch (Exception e) {
