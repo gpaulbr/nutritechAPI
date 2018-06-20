@@ -44,6 +44,10 @@ public class Ingrediente implements Serializable {
 	@Column(name = "Origem")
 	private String origem;
 
+	@NotEmpty
+	@Column(name = "Alergenico")
+	private String alergenico;
+
 	@Column(name= "Status", nullable = false)
 	private boolean status;
 
@@ -95,6 +99,9 @@ public class Ingrediente implements Serializable {
 		this.origem = origem;
 	}
 
+	public void setAlergenico(String alergenico) {this.alergenico = alergenico;}
+
+	public String getAlergenico() {return alergenico;}
 	public Set<IngredienteAtributo> getIngredienteAtributo() {
 		return ingredienteAtributo;
 	}

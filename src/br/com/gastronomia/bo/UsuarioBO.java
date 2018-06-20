@@ -114,10 +114,7 @@ public class UsuarioBO {
 	public HashMap<String, List<Usuario>> listUser() {
 		ArrayList<Usuario> usuarios = null;
 		HashMap<String, List<Usuario>> listUsers = new HashMap<String, List<Usuario>>();
-		usuarios = (ArrayList<Usuario>) usuarioDAO.listAll(Usuario.class)
-											.stream()
-											.filter(usuario -> { return usuario.isStatus(); })
-											.collect(Collectors.toList());
+		usuarios = (ArrayList<Usuario>) usuarioDAO.listAll(Usuario.class);
 		listUsers.put("Usuarios", usuarios);
 		return listUsers;
 	}
