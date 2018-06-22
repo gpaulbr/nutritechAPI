@@ -5,6 +5,7 @@ import br.com.gastronomia.dao.IngredienteDAO;
 import br.com.gastronomia.dto.IngredienteCadastroDTO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.Ingrediente;
+import br.com.gastronomia.model.Usuario;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,20 +36,20 @@ public class TestIngredienteBO {
     IngredienteDAO ingredienteDAO;
 
     @Mock
-    IngredienteCadastroDTO ingredienteCadastroDTO;
+    Ingrediente ingrediente;
 
     @Before
     public void init() throws ValidationException, NoSuchAlgorithmException {
         ingredienteBO = new IngredienteBO();
 
-        ingredienteCadastroDTO = new IngredienteCadastroDTO();
-        ingredienteCadastroDTO.setNome("Farinha");
-        ingredienteCadastroDTO.setIdCriador(1L);
-        ingredienteCadastroDTO.setOrigem("TACO");
-        ingredienteCadastroDTO.setStatus(true);
-        ingredienteCadastroDTO.setTipo(PRIVADO);
+        ingrediente = new Ingrediente();
+        ingrediente.setNome("Farinha");
+        ingrediente.setCriador(new Usuario(1));
+        ingrediente.setOrigem("TACO");
+        ingrediente.setStatus(true);
+        ingrediente.setTipo(PRIVADO);
 
-        ingredienteBO.createIngrediente(ingredienteCadastroDTO);
+        ingredienteBO.createIngrediente(ingrediente);
     }
 
 
