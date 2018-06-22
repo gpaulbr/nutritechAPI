@@ -24,14 +24,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class TestUsuarioBO {
 
-    // teste novo
+
     UsuarioBO usuarioBO;
 
     @Mock
     UsuarioDAO usuarioDAO;
 
-
-    // Testes do semestre anterior da classe Validator
 
     @Test
     public void testCPFTrue() {
@@ -43,8 +41,6 @@ public class TestUsuarioBO {
         assertEquals(false, Validator.validaCpf.fazConta(("85172596021")));
     }
 
-    // Testes a partir da Sprint 3 - 2018
-    // Testes da Classe Validator
     @Test
     public void testCpfNaoAceitaLetras() {
         assertEquals(false, Validator.validaCpf.fazConta("abcdefghijk"));
@@ -60,15 +56,11 @@ public class TestUsuarioBO {
         assertEquals(false, Validator.validaCpf.fazConta("123456789011"));
     }
 
-    // Testes da Classe util
-
     @Test
     public void testNaoAceitaSequenciaDeNumerosIguais() {
 
         assertEquals(false, Util.isCPF("1111111111"));
     }
-
-    // Testes da Classe Usuario - model
 
     @Test
     public void testUsuarioNome() {
@@ -142,43 +134,6 @@ public class TestUsuarioBO {
         }
     }
 
-    //SendMail
-    @Test
-    public void testSendEmail() {
-
-    }
-
-    // testes novos
-
-//	@Test
-//	public void testUpdateGroup() throws ValidationException {
-//		Usuario user = new Usuario();
-//		Mockito.when(UsuarioDAO.updateUser(user)).thenReturn((long)1);
-//		long retorno = usuarioBO.updateUser(user);
-//		assertEquals(1,retorno);
-//	}
-//
-//	@Test
-//	public void testActiveGroup() throws ValidationException {
-//		Mockito.when(grupoReceitasDAO.alterStatus(0, true)).thenReturn((long)0);
-//		long result = grupoReceitasBO.activateGroup(0);
-//		assertEquals(result, 0);
-//	}
-//
-//	@Test
-//	public void testGroupDeactiveGroup() throws ValidationException {
-//		Mockito.when(grupoReceitasDAO.alterStatus(0, true)).thenReturn((long)0);
-//		long result = grupoReceitasBO.deactivateGroup(0);
-//		assertEquals(result, 0);
-//	}
-//
-//	@Test
-//	public void testGetGroupByCod() throws ValidationException {
-//		GrupoReceitas grupoReceitas = new GrupoReceitas();
-//		Mockito.when(grupoReceitasDAO.findGroupByID(1)).thenReturn(grupoReceitas);
-//		GrupoReceitas grupoReceitas2 = grupoReceitasBO.getGroupByCod(1);
-//		assertEquals(grupoReceitas, grupoReceitas2);
-//	}
 
     @Test //1 - OK
     public void testCreateUsuario() throws NoSuchAlgorithmException, ValidationException {
@@ -210,7 +165,7 @@ public class TestUsuarioBO {
 
     @Test // 4 - OK
     public void testGroupDeactiveUser() throws ValidationException {
-        Mockito.when(usuarioDAO.alterStatus(0, true)).thenReturn((long)0);
+        Mockito.when(usuarioDAO.alterStatus(0, true)).thenReturn((long) 0);
         long result = usuarioBO.deactivateUser(0);
         assertEquals(result, 0);
     }
@@ -222,7 +177,6 @@ public class TestUsuarioBO {
         Usuario usuario2 = usuarioBO.getUserById(1);
         assertEquals(usuario, usuario2);
     }
-
 
 
 }
