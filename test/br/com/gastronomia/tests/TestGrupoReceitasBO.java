@@ -4,16 +4,13 @@ import br.com.gastronomia.bo.GrupoReceitasBO;
 import br.com.gastronomia.dao.GrupoReceitasDAO;
 import br.com.gastronomia.exception.ValidationException;
 import br.com.gastronomia.model.GrupoReceitas;
-import br.com.gastronomia.model.Ingrediente;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -40,27 +37,6 @@ public class TestGrupoReceitasBO {
         assertTrue(retorno);
     }
 
-//    @Test
-//    public void testListGroups() {
-//        ArrayList<GrupoReceitas> grupoReceitasArrayList = new ArrayList<>();
-//        GrupoReceitas grupoReceitas = new GrupoReceitas();
-//        grupoReceitas.setNome("Chambinho");
-//        grupoReceitasArrayList.add(grupoReceitas);
-//        Mockito.when(grupoReceitasDAO.listForName(grupoReceitas, "Chambinho")).thenReturn(grupoReceitasArrayList);
-//        HashMap<String, List<GrupoReceitas>> listGrupoReceitas = grupoReceitasBO.listGroups();
-//        assertEquals(grupoReceitasArrayList.get(0), listGrupoReceitas.get("GrupoReceitas").get(0));
-//    }
-//
-//    @Test
-//    public void testListAllGroup() {
-//        ArrayList<GrupoReceitas> grupoReceitasArrayList = new ArrayList<>();
-//        grupoReceitasArrayList.add(new GrupoReceitas());
-//        Mockito.when(grupoReceitasDAO.listAll(GrupoReceitas.class)).thenReturn(grupoReceitasArrayList);
-//        HashMap<String, List<GrupoReceitas>> listGrupoReceitas = new HashMap<String, List<GrupoReceitas>>();
-//        listGrupoReceitas.put("1",grupoReceitasArrayList);
-//        listGrupoReceitas = grupoReceitasBO.listGroups();
-//        assertEquals(grupoReceitasArrayList.get(0), listGrupoReceitas.get("1").get(0));
-//    }
 
     @Test
     public void testUpdateGroup() throws ValidationException{
@@ -91,4 +67,5 @@ public class TestGrupoReceitasBO {
         GrupoReceitas grupoReceitas2 = grupoReceitasBO.getGroupByCod(1);
         assertEquals(grupoReceitas, grupoReceitas2);
     }
+
 }
