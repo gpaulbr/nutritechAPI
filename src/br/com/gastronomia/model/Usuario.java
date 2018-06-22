@@ -89,6 +89,10 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 	}
 
+	public Usuario(int id) {
+		this.id = id;
+	}
+
 	public String getCpf() {
 		return cpf;
 	}
