@@ -39,16 +39,16 @@ public class TestIngredienteBO {
 
     @Before
     public void init() throws ValidationException, NoSuchAlgorithmException {
-        ingredienteBO = new IngredienteBO();
-
-        ingredienteCadastroDTO = new IngredienteCadastroDTO();
-        ingredienteCadastroDTO.setNome("Farinha");
-        ingredienteCadastroDTO.setIdCriador(1L);
-        ingredienteCadastroDTO.setOrigem("TACO");
-        ingredienteCadastroDTO.setStatus(true);
-        ingredienteCadastroDTO.setTipo(PRIVADO);
-
-        ingredienteBO.createIngrediente(ingredienteCadastroDTO);
+//        ingredienteBO = new IngredienteBO();
+//
+//        ingredienteCadastroDTO = new IngredienteCadastroDTO();
+//        ingredienteCadastroDTO.setNome("Farinha");
+//        ingredienteCadastroDTO.setIdCriador(1L);
+//        ingredienteCadastroDTO.setOrigem("TACO");
+//        ingredienteCadastroDTO.setStatus(true);
+//        ingredienteCadastroDTO.setTipo(PRIVADO);
+//
+//        ingredienteBO.createIngrediente(ingredienteCadastroDTO);
     }
 
 
